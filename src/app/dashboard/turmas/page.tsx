@@ -1,3 +1,9 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Turmas | ONG Ide Evangelizar",
+};
+
 export default function ClassesPage() {
     return (
         <div className="flex flex-1 flex-col gap-4 p-4">

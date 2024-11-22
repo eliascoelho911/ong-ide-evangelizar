@@ -1,3 +1,9 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Alunos | ONG Ide Evangelizar",
+};
+
 export default function StudentsPage() {
     return (
         <div className="flex flex-1 flex-col gap-4 p-4">

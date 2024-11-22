@@ -18,32 +18,28 @@ const data = {
   navMain: [
     {
       title: "Turmas",
-      url: "#",
-      icon: School,
-      isActive: true
+      path: "turmas",
+      icon: School
     },
     {
       title: "Alunos",
-      url: "#",
-      icon: Users,
-      isActive: false
+      path: "alunos",
+      icon: Users
     },
     {
       title: "Professores",
-      url: "#",
-      icon: Users,
-      isActive: false
+      path: "#",
+      icon: Users
     },
     {
       title: "Documentos",
-      url: "#",
-      icon: Files,
-      isActive: false
+      path: "#",
+      icon: Files
     }
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ currentPath, ...props }: { currentPath: string } & React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -55,8 +51,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {data.navMain.map((item) => (
                 <SidebarMenuItem key={item.title} >
-                  <SidebarMenuButton asChild isActive={item.isActive}>
-                    <a href={item.url}>
+                  <SidebarMenuButton asChild isActive={currentPath.endsWith(item.path)}>
+                    <a href={item.path}>
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
