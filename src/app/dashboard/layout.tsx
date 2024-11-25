@@ -10,12 +10,19 @@ import {
 } from "@/components/ui/sidebar"
 import { usePathname } from 'next/navigation'
 
+const routeTitles: Record<string, string> = {
+    '/dashboard/alunos': 'Alunos',
+    '/dashboard/professores': 'Professores',
+    '/dashboard/turmas': 'Turmas',
+};
+
 export default function DashboardLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode,
 }) {
     const currentPath = usePathname();
+    const dynamicTitle = routeTitles[currentPath] || 'Dashboard';
 
     return (
         <SidebarProvider>
@@ -26,7 +33,10 @@ export default function DashboardLayout({
                     <Separator orientation="vertical" className="mr-2 h-4" />
                     <SearchForm />
                 </header>
-                <main>{children}</main>
+                <main>
+                    <h1 className="m-4 text-2xl font-bold">{dynamicTitle}</h1>
+                    {children}
+                </main>
             </SidebarInset>
         </SidebarProvider>
     )
