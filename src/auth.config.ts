@@ -9,11 +9,11 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
 
       if (isLoggedIn) {
-        if (nextUrl.pathname === '/dashboard' || !nextUrl.pathname.startsWith('/dashboard')) {
-          return Response.redirect(new URL('/dashboard/turmas', nextUrl));
-        } else {
+        // if (nextUrl.pathname === '/dashboard' || !nextUrl.pathname.startsWith('/dashboard')) {
+          // return Response.redirect(new URL('/dashboard/turmas', nextUrl));
+        // } else {
           return true;
-        }
+        // }
       } else {
         return false
       }
