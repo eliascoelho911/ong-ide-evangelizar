@@ -1,7 +1,13 @@
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
 import { Input } from "@/components/ui/input"; // Adjust the import path based on your project structure
-import { Select } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea";
 import { Field } from "./form-schema";
 
@@ -30,10 +36,14 @@ const FormField: React.FC<FieldProps> = ({ field }) => {
       {field.type === "text" && <Input mask={field.pattern} {...commonProps} />}
       {field.type === "select" && (
         <Select {...commonProps}>
-          <option value="">Selecione...</option>
-          {field.options?.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Selecione..." />
+          </SelectTrigger>
+          <SelectContent>
+            {field.options?.map((option) => (
+              <SelectItem key={option} value={option}>{option}</SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       )}
       {field.type === "textarea" && <Textarea {...commonProps} />}
