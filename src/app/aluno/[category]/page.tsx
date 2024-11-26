@@ -2,14 +2,13 @@ import FormTemplate from "@/components/templates/form/form";
 import { studentProfileDataSchema } from "../student_profile_data_schema";
 
 interface CategoryPageProps {
-    params: {
+    params: Promise<{
         category: string;
-    };
+    }>;
 }
 
-export default function CategoryPage({
-    params,
-}: CategoryPageProps) {
+export default async function CategoryPage(props: CategoryPageProps) {
+    const params = await props.params;
     const categoryId = params.category;
     const category = studentProfileDataSchema.categories.find(
         (category) => category.id === categoryId

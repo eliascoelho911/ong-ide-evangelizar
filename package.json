@@ -23,6 +23,7 @@
     "clsx": "^2.1.1",
     "firebase": "^11.0.2",
     "heroicons": "^2.2.0",
+    "inputmask": "^5.0.9",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
     "next-auth": "5.0.0-beta.25",
@@ -37,6 +38,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/inputmask": "^5.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

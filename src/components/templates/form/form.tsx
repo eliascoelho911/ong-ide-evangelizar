@@ -1,3 +1,5 @@
+'use client';
+
 import FormField from "@/components/templates/form/form-field";
 import { Button } from "@/components/ui/button";
 import { useForm, FormProvider } from "react-hook-form";

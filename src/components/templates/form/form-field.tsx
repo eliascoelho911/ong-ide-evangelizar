@@ -13,17 +13,12 @@ const FormField: React.FC<FieldProps> = ({ field }) => {
   const { register, formState: { errors } } = useFormContext();
 
   const commonProps = {
-    id: field.name,
+    id: field.id,
     placeholder: field.name,
     disabled: field.editable === false,
     ...register(field.name, {
       required: field.is_required ? `${field.name} é obrigatório` : false,
-      pattern: field.pattern
-        ? {
-            value: field.pattern,
-            message: `${field.name} inválido`,
-          }
-        : undefined,
+      pattern: field.pattern ? new RegExp(field.pattern) : undefined,
     }),
   };
 
@@ -32,7 +27,7 @@ const FormField: React.FC<FieldProps> = ({ field }) => {
       <label htmlFor={field.name} className="block text-sm font-medium text-gray-700">
         {field.name}
       </label>
-      {field.type === "text" && <Input {...commonProps} />}
+      {field.type === "text" && <Input mask={field.pattern} {...commonProps} />}
       {field.type === "select" && (
         <Select {...commonProps}>
           <option value="">Selecione...</option>

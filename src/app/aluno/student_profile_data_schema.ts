@@ -1,4 +1,5 @@
 import { FormSchema } from '@/components/templates/form/form-schema';
+
 export const studentProfileDataSchema: FormSchema = {
     categories: [
         {
@@ -9,29 +10,34 @@ export const studentProfileDataSchema: FormSchema = {
                     name: 'Informações Pessoais',
                     fields: [
                         {
+                            id: 'nome-completo',
                             name: 'Nome Completo',
                             type: 'text',
                             is_required: true,
                         },
                         {
+                            id: 'data-nascimento',
                             name: 'Data de Nascimento',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{2}\/\d{2}\/\d{4}$/
+                            pattern: '^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\\d{4}$'
                         },
                         {
+                            id: 'cpf',
                             name: 'CPF',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
+                            pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
                         },
                         {
+                            id: 'rg',
                             name: 'RG',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{2}\.\d{3}\.\d{3}-\d{1}$/
+                            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1}$'
                         },
                         {
+                            id: 'sexo',
                             name: 'Sexo',
                             type: 'select',
                             is_required: true,
@@ -62,7 +68,7 @@ export const studentProfileDataSchema: FormSchema = {
                             type: 'select',
                             is_required: true,
                             is_dynamic: true,
-                        }   
+                        }
                     ]
                 }
             ]
@@ -79,7 +85,7 @@ export const studentProfileDataSchema: FormSchema = {
                             name: 'CEP',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{5}-\d{3}$/
+                            pattern: '^\\d{5}-\\d{3}$'
                         },
                         {
                             id: 'street',
@@ -89,11 +95,13 @@ export const studentProfileDataSchema: FormSchema = {
                             is_dynamic: true,
                         },
                         {
+                            id: 'numero',
                             name: 'Número',
                             type: 'text',
                             is_required: true,
                         },
                         {
+                            id: 'complemento',
                             name: 'Complemento',
                             type: 'text',
                         },
@@ -130,32 +138,37 @@ export const studentProfileDataSchema: FormSchema = {
                     name: 'Responsável',
                     fields: [
                         {
+                            id: 'responsavel-nome-completo-1',
                             name: 'Nome Completo',
                             type: 'text',
                             is_required: true,
                         },
                         {
+                            id: 'responsavel-cpf-1',
                             name: 'CPF',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
+                            pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
                         },
                         {
+                            id: 'responsavel-rg-1',
                             name: 'RG',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{2}\.\d{3}\.\d{3}-\d{1}$/
+                            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1}$'
                         },
                         {
+                            id: 'responsavel-parentesco-1',
                             name: 'Parentesco',
                             type: 'text',
                             is_required: true,
                         },
                         {
+                            id: 'responsavel-telefone-1',
                             name: 'Telefone',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\(\d{2}\) \d{4,5}-\d{4}$/
+                            pattern: '^\\(\\d{2}\\) \\d{4,5}-\\d{4}$'
                         }
                     ]
                 },
@@ -163,32 +176,37 @@ export const studentProfileDataSchema: FormSchema = {
                     name: 'Responsável',
                     fields: [
                         {
+                            id: 'responsavel-nome-completo-2',
                             name: 'Nome Completo',
                             type: 'text',
                             is_required: true,
                         },
                         {
+                            id: 'responsavel-cpf-2',
                             name: 'CPF',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
+                            pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
                         },
                         {
+                            id: 'responsavel-rg-2',
                             name: 'RG',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\d{2}\.\d{3}\.\d{3}-\d{1}$/
+                            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1}$'
                         },
                         {
+                            id: 'responsavel-parentesco-2',
                             name: 'Parentesco',
                             type: 'text',
                             is_required: true,
                         },
                         {
+                            id: 'responsavel-telefone-2',
                             name: 'Telefone',
                             type: 'text',
                             is_required: true,
-                            pattern: /^\(\d{2}\) \d{4,5}-\d{4}$/
+                            pattern: '^\\(\\d{2}\\) \\d{4,5}-\\d{4}$'
                         }
                     ]
                 }
@@ -202,24 +220,28 @@ export const studentProfileDataSchema: FormSchema = {
                     name: 'Informações Adicionais',
                     fields: [
                         {
+                            id: 'situacao',
                             name: 'Situação',
                             type: 'select',
                             options: ['Ativo', 'Inativo'],
                             editable: false
                         },
                         {
+                            id: 'data-ingresso',
                             name: 'Data de Ingresso',
                             type: 'text',
-                            pattern: /^\d{2}\/\d{2}\/\d{4}$/,
+                            pattern: '^\\d{2}\\/\\d{2}\\/\\d{4}$',
                             editable: false
                         },
                         {
+                            id: 'data-saida',
                             name: 'Data de Saída',
                             type: 'text',
-                            pattern: /^\d{2}\/\d{2}\/\d{4}$/,
+                            pattern: '^\\d{2}\\/\\d{2}\\/\\d{4}$',
                             editable: false
                         },
                         {
+                            id: 'observacoes',
                             name: 'Observações',
                             type: 'textarea',
                         }
@@ -228,4 +250,4 @@ export const studentProfileDataSchema: FormSchema = {
             ]
         }
     ]
-}
+};
