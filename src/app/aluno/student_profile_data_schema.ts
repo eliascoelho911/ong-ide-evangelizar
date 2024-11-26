@@ -1,4 +1,5 @@
-export const studentProfileDataSchema = {
+import { FormSchema } from '@/components/templates/form/form-schema';
+export const studentProfileDataSchema: FormSchema = {
     categories: [
         {
             name: 'Dados Pessoais',

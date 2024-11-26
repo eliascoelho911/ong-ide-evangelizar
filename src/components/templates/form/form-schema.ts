@@ -14,10 +14,11 @@ export interface Group {
 }
 
 export interface Field {
+    id?: string;
     name: string;
     type: 'text' | 'textarea' | 'select';
-    is_required: boolean;
-    is_dinamic?: boolean;
+    is_required?: boolean;
+    is_dynamic?: boolean;
     editable?: boolean;
     pattern?: RegExp;
     options?: string[];

@@ -1,3 +1,4 @@
+import FormTemplate from "@/components/templates/form/form";
 import { studentProfileDataSchema } from "../student_profile_data_schema";
 
 interface CategoryPageProps {
@@ -9,12 +10,13 @@ interface CategoryPageProps {
 export default function CategoryPage({
     params,
 }: CategoryPageProps) {
-    const { category } = params;
+    const categoryId = params.category;
+    const category = studentProfileDataSchema.categories.find(
+        (category) => category.id === categoryId
+    )!;
 
     return (
-        <div>
-            <h1>Category: {category}</h1>
-        </div>
+        <FormTemplate title={category.name} edit={true} content={category.groups} />
     );
 }
 
