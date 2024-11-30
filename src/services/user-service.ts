@@ -1,6 +1,5 @@
 import { User } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db, signIn } from "@/lib/firebase"; // Importando a instância do Firebase inicializada
+import { signIn, saveDocument, getDocument } from "@/lib/firebase"; // Importando a instância do Firebase inicializada
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/auth.config";
 
@@ -16,30 +15,21 @@ export async function loginUser(email: string, password: string): Promise<User> 
 }
 
 /**
- * Cria ou atualiza os dados do usuário no Firestore.
- * @param userId ID único do usuário (geralmente vindo do Firebase Auth)
+ * Salva os dados do usuário no Firestore.
+ * @param userId ID do usuário
  * @param userData Dados adicionais do usuário
- * @returns Confirmação da escrita no Firestore
  */
-export async function saveUserData(userId: string, userData: Record<string, any>): Promise<void> {
-  const userDocRef = doc(db, "users", userId);
-  await setDoc(userDocRef, userData, { merge: true });
+export async function saveUserData(userId: string, userData: Record<string, any>) {
+  await saveDocument("users", userId, userData);
 }
 
 /**
  * Busca os dados do usuário no Firestore.
- * @param userId ID único do usuário
- * @returns Dados do usuário armazenados no Firestore
+ * @param userId ID do usuário
+ * @returns Dados do usuário ou null
  */
 export async function getUserData(userId: string): Promise<Record<string, any> | null> {
-  const userDocRef = doc(db, "users", userId);
-  const userDoc = await getDoc(userDocRef);
-
-  if (userDoc.exists()) {
-    return userDoc.data();
-  } else {
-    return null;
-  }
+  return await getDocument("users", userId);
 }
 
 /**
