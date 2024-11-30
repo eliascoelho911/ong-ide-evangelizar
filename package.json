@@ -30,7 +30,7 @@
     "inputmask": "^5.0.9",
     "lucide-react": "^0.460.0",
     "next": "15.0.3",
-    "next-auth": "5.0.0-beta.25",
+    "next-auth": "4.24.10",
     "ong-ide-evangelizar": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
