@@ -1,7 +1,4 @@
-"use client"
-
 import { ChevronRight, type LucideIcon } from "lucide-react"
-
 import {
   Collapsible,
   CollapsibleContent,
@@ -18,31 +15,38 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
-  items,
-}: {
-  items: {
+export interface NavMainProps {
+  navMain: {
     title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
-    items?: {
+    content: {
       title: string
       url: string
+      icon?: LucideIcon
+      isOpen?: boolean
+      items: {
+        title: string
+        url: string
+        isActive?: boolean
+      }[]
     }[]
   }[]
+}
+
+function NavMainGroup({
+  navMain,
+}: {
+  navMain: NavMainProps["navMain"][0]
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Central</SidebarGroupLabel>
+      <SidebarGroupLabel>{navMain.title}</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {navMain.content.map((item) => (
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
-            className="group/collapsible"
-          >
+            defaultOpen={item.isOpen}
+            className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
@@ -55,7 +59,7 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
+                      <SidebarMenuSubButton asChild isActive={subItem.isActive}>
                         <a href={subItem.url}>
                           <span>{subItem.title}</span>
                         </a>
@@ -70,4 +74,14 @@ export function NavMain({
       </SidebarMenu>
     </SidebarGroup>
   )
+}
+
+export function NavDropdown({
+  navMain,
+}: NavMainProps) {
+  return (
+    navMain.map((item) => (
+      <NavMainGroup key={item.title} navMain={item} />
+    ))
+  );
 }

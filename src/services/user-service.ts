@@ -1,7 +1,8 @@
-import { User } from "firebase/auth";
-import { signIn, saveDocument, getDocument } from "@/lib/firebase"; // Importando a instância do Firebase inicializada
+import { User, UserIdentification } from "@/types/user";
+import { signIn, saveDocument, getDocument } from "@/lib/firebase"; 
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/auth.config";
+import { toUser } from "@/utils/firebase-mappers";
 
 /**
  * Faz login de um usuário no Firebase Auth.
@@ -9,9 +10,9 @@ import { authOptions } from "@/auth.config";
  * @param password Senha do usuário
  * @returns Dados do usuário autenticado
  */
-export async function loginUser(email: string, password: string): Promise<User> {
+export async function loginUser(email: string, password: string): Promise<UserIdentification> {
   const userCredential = await signIn(email, password);
-  return userCredential.user;
+  return toUser(userCredential.user);
 }
 
 /**
@@ -28,15 +29,15 @@ export async function saveUserData(userId: string, userData: Record<string, any>
  * @param userId ID do usuário
  * @returns Dados do usuário ou null
  */
-export async function getUserData(userId: string): Promise<Record<string, any> | null> {
-  return await getDocument("users", userId);
+export async function getUserData(userId: string): Promise<User> {
+  return await toUser(getDocument("users", userId));
 }
 
 /**
  * Busca os dados do usuário autenticado.
  * @returns Dados do usuário autenticado
  */
-export async function getLoggedUserData() {
+export async function getLoggedUserData(): Promise<User> {
   const userId = await getUserId();
   return getUserData(userId);
 }
@@ -47,7 +48,7 @@ export async function getLoggedUserData() {
  * @returns {Promise<string>} O ID do usuário autenticado.
  * @throws {Error} Se o usuário não estiver autenticado.
  */
-export async function getUserId() {
+export async function getUserId(): Promise<string> {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
