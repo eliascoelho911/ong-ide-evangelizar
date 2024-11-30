@@ -3,7 +3,7 @@
 import React from "react";
 import { ReactNode } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/app/components/app-sidebar";
 import { studentProfileDataSchema } from "./student_profile_data_schema";
 import { usePathname } from "next/navigation";
 

@@ -1,9 +1,12 @@
 import React from 'react';
-import { sora } from '@/app/ui/fonts';
+import { fredoka } from '@/app/ui/fonts';
 
 const Logo: React.FC = () => {
     return (
-        <h1 className={`${sora.className} antialiased font-bold`} style={{ userSelect: 'none' }}>ONG Ide Evangelizar</h1>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            <p className={`${fredoka.className} antialiased`} style={{ userSelect: 'none', fontWeight: 'normal', fontSize: 14, margin: 0 }}>ONG</p>
+            <p className={`${fredoka.className} antialiased`} style={{ userSelect: 'none', fontWeight: 'bold', fontSize: 20, margin: 0 }}>IDE EVANGELIZAR</p>
+        </div>
     );
 };
 

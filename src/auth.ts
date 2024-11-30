@@ -1,4 +1,4 @@
-import * as firebase from "@/app/lib/firebase";
+import * as firebase from "@/lib/firebase";
 import { authConfig } from '@/auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
