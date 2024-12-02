@@ -2,7 +2,7 @@ import { initializeApp, FirebaseApp } from "firebase/app";
 import { getAuth, getIdToken, Auth } from "firebase/auth";
 import { getInstallations, getToken, Installations } from "firebase/installations";
 
-let firebaseConfig: Record<string, any>;
+let firebaseConfig: Record<string, string>;
 
 self.addEventListener('install', () => {
     // extract firebase config from query string
