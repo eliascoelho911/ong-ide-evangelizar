@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { getAuth, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
+import { getAuth, getIdToken, onAuthStateChanged, signInWithEmailAndPassword, UserCredential } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -32,4 +32,17 @@ export async function getDocument(collection: string, id: string): Promise<Recor
   const docSnap = await getDoc(docRef);
 
   return docSnap.exists() ? docSnap.data() : null;
+}
+
+export async function getLoggedUser(): Promise<{ id: string; email: string | null }> {
+  return new Promise<{ id: string; email: string | null }>((resolve) => {
+    auth.onAuthStateChanged((user) => {
+      console.log('currentUser', user);
+      if (user) {
+        resolve({ id: user.uid, email: user.email });
+      } else {
+        throw new Error("Usuário não autenticado");
+      }
+    });
+  });
 }

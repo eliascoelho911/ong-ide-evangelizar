@@ -1,6 +1,7 @@
 import { User, UserIdentification } from "@/types/user";
+import * as NextAuth from "next-auth";
 
-export function toUser(data: any): User {
+export function toUser(data: Record<string, any>): User {
     return {
         id: data.id,
         email: data.email,
@@ -9,9 +10,9 @@ export function toUser(data: any): User {
     };
 }
 
-export function toUserIdentification(data: any): UserIdentification {
-    return {
+export function toUserIdentification(data: NextAuth.User): UserIdentification | null {
+    return data.id && data.email ? {
         id: data.id,
         email: data.email,
-    };
+    } : null;
 }

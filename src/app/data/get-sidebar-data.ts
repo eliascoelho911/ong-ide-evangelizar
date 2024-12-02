@@ -1,11 +1,7 @@
-'use client';
-
 import { NavMainProps } from "@/components/nav-dropdown";
 import { NavUserProps } from "@/components/nav-user";
-import { getLoggedUserData } from "@/services/user-service";
 import { User } from "@/types/user";
 import { GraduationCap } from "lucide-react";
-import { usePathname } from "next/navigation";
 
 const data = (currentUrl: string): NavMainProps => {
     function isActiveUrl(currentUrl: string, url: string) {
@@ -45,7 +41,7 @@ const data = (currentUrl: string): NavMainProps => {
     }
 }
 
-const userData = (user: User): NavUserProps | null => {
+export function getNavUserData(user: User): NavUserProps | null {
     return user && user.name ? {
         user: {
             name: user.name,
@@ -55,10 +51,6 @@ const userData = (user: User): NavUserProps | null => {
     } : null;
 }
 
-export async function getSidebarData() {
-    const pathname = usePathname();
-    return {
-        navMain: data(pathname),
-        user: userData(await getLoggedUserData())
-    }
+export function getNavMainData(currentUrl: string): NavMainProps {
+    return data(currentUrl);
 }
