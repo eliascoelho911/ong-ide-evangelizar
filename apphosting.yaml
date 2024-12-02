@@ -1,0 +1,13 @@
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyCPLjNV94Spx_zoa5l36gtrsmbAABvAtbo
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: ong-ide-evangelizar-web.firebaseapp.com
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: ong-ide-evangelizar-web
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: ong-ide-evangelizar-web.firebasestorage.app
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: 994409719747
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: 1:994409719747:web:13df300f01adf6bd7bbf76

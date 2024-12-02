@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "ong-ide-evangelizar-web"
-  }
+    "default": "ong-ide-evangelizar-web",
+    "ong-ide-evangelizar": "ong-ide-evangelizar-web"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -1,9 +1,8 @@
-import * as firebase from "@/lib/firebase";
 import { authConfig } from '@/auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
 import { z } from 'zod';
-import { UserIdentification } from "./types/user";
+import { signInWithEmailAndPassword } from '@/lib/firebase/auth';
 
 export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
@@ -22,10 +21,10 @@ export const { auth, signIn, signOut } = NextAuth({
                 if (parsedCredentials.success) {
                     try {
                         const { email, password } = parsedCredentials.data;
-                        const user = (await firebase.signIn(email, password)).user;
+                        const user = (await signInWithEmailAndPassword(email, password)).user;
                         console.log('Logged in:', user.email, ', id: ', user.uid);
 
-                        return { id: user.uid, email: user.email } as UserIdentification;
+                        return { id: user.uid, email: user.email };
                     } catch (error) {
                         console.error('Login failed:', error);
                         return null;
