@@ -1,3 +1,5 @@
+'use client';
+
 import { firebaseConfig } from "@/lib/firebase/config";
 import { onAuthStateChanged, signOut } from "@/lib/firebase/auth";
 import { useRouter } from "next/navigation";
@@ -15,7 +17,7 @@ function useUserSession(initialUser: User | null) {
     useEffect(() => {
         if ("serviceWorker" in navigator) {
             const serializedFirebaseConfig = encodeURIComponent(JSON.stringify(firebaseConfig));
-            const serviceWorkerUrl = `/auth-service-worker.js?firebaseConfig=${serializedFirebaseConfig}`
+            const serviceWorkerUrl = `/auth-service-worker.ts?firebaseConfig=${serializedFirebaseConfig}`
 
             navigator.serviceWorker
                 .register(serviceWorkerUrl)
@@ -55,6 +57,8 @@ export default function Header({ initialUser }: { initialUser: User | null }) {
         event.preventDefault();
         signOut();
     };
+
+    console.log("user", user);
 
     return (
         <header>

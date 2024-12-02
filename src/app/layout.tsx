@@ -22,7 +22,7 @@ export default async function RootLayout({
     <html lang="pt-br">
       <body>
         <Header initialUser={currentUser} />
-        <main>{children}</main>
+        {children}
       </body>
     </html>
   );
