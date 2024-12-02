@@ -1,6 +1,6 @@
 import { NavMainProps } from "@/components/nav-dropdown";
 import { NavUserProps } from "@/components/nav-user";
-import { User } from "@/types/user";
+import { User } from "firebase/auth";
 import { GraduationCap } from "lucide-react";
 
 const data = (currentUrl: string): NavMainProps => {
@@ -42,11 +42,11 @@ const data = (currentUrl: string): NavMainProps => {
 }
 
 export function getNavUserData(user: User): NavUserProps | null {
-    return user && user.name ? {
+    return user && user.displayName ? {
         user: {
-            name: user.name,
-            email: user.email,
-            avatar: user.avatarUrl || undefined
+            name: user.displayName,
+            email: user.email!,
+            avatar: user.photoURL || undefined
         }
     } : null;
 }
