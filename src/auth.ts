@@ -3,6 +3,8 @@ import Credentials from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
 import { z } from 'zod';
 import { signInWithEmailAndPassword } from '@/lib/firebase/auth';
+import { FirestoreAdapter } from "@auth/firebase-adapter";
+import { db } from "@/lib/firebase/clientApp";
 
 export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
@@ -35,16 +37,17 @@ export const { auth, signIn, signOut } = NextAuth({
             },
         })
     ],
-    callbacks: {
-        async session({ session, token }) {
-            session.user.id = token.id as string;
-            return session;
-        },
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;
-            }
-            return token;
-        },
-    },
+    adapter: FirestoreAdapter(db),
+    // callbacks: {
+    //     async session({ session, token }) {
+    //         session.user.id = token.id as string;
+    //         return session;
+    //     },
+    //     async jwt({ token, user }) {
+    //         if (user) {
+    //             token.id = user.id;
+    //         }
+    //         return token;
+    //     },
+    // },
 });
