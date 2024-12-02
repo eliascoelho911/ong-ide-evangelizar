@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { User } from "firebase/auth";
 import Link from "next/link";
+import Image from "next/image";
 
 function useUserSession(initialUser: User | null) {
     // The initialUser comes from the server via a server component
@@ -63,14 +64,14 @@ export default function Header({ initialUser }: { initialUser: User | null }) {
     return (
         <header>
             <Link href="/" className="logo">
-                <img src="/friendly-eats.svg" alt="FriendlyEats" />
+                <Image src="/friendly-eats.svg" alt="FriendlyEats" />
                 Friendly Eats
             </Link>
             {user ? (
                 <>
                     <div className="profile">
                         <p>
-                            <img className="profileImage" src={user.photoURL || "/profile.svg"} alt={user.email} />
+                            <Image className="profileImage" src={user.photoURL || "/profile.svg"} alt={user.email || ""} />
                             {user.displayName}
                         </p>
 
@@ -90,7 +91,7 @@ export default function Header({ initialUser }: { initialUser: User | null }) {
                 </>
             ) : (
                 <div className="profile"><a href="#">
-                    <img src="/profile.svg" alt="A placeholder user image" />
+                    <Image src="/profile.svg" alt="A placeholder user image" />
                     Sign In with Google
                 </a></div>
             )}
