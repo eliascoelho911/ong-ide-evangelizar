@@ -2,6 +2,8 @@
  
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import { deleteSession } from '@/lib/session/session'
+import { redirect } from 'next/navigation';
  
 export async function authenticate(
   prevState: string | undefined,
@@ -20,4 +22,9 @@ export async function authenticate(
     }
     throw error;
   }
+}
+ 
+export async function logout() {
+  deleteSession()
+  redirect('/login')
 }

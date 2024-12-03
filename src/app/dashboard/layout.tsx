@@ -1,5 +1,3 @@
-'use client'
-
 import { AppSidebar } from "@/app/components/app-sidebar"
 import { SearchForm } from "@/components/ui/search-form"
 import { Separator } from "@/components/ui/separator"
@@ -8,22 +6,12 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { usePathname } from 'next/navigation'
 
-const routeTitles: Record<string, string> = {
-    '/dashboard/alunos': 'Alunos',
-    '/dashboard/professores': 'Professores',
-    '/dashboard/turmas': 'Turmas',
-};
-
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children,
 }: {
     children: React.ReactNode,
 }) {
-    const currentPath = usePathname();
-    const dynamicTitle = routeTitles[currentPath] || 'Dashboard';
-
     return (
         <SidebarProvider>
             <AppSidebar />
@@ -34,7 +22,6 @@ export default function DashboardLayout({
                     <SearchForm />
                 </header>
                 <main>
-                    <h1 className="m-4 text-2xl font-bold">{dynamicTitle}</h1>
                     {children}
                 </main>
             </SidebarInset>

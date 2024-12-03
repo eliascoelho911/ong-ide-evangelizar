@@ -11,6 +11,15 @@ export function onAuthStateChanged(cb: NextOrObserver<User>) {
     return _onAuthStateChanged(auth, cb);
 }
 
+export async function getCurrentUser(): Promise<User | null> {
+    return new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged((user) => {
+            unsubscribe();
+            resolve(user);
+        });
+    });
+}
+
 export function signInWithEmailAndPassword(email: string, password: string): Promise<UserCredential> {
     return _signInWithEmailAndPassword(auth, email, password);
 }

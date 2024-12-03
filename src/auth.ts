@@ -4,7 +4,8 @@ import NextAuth from 'next-auth';
 import { z } from 'zod';
 import { signInWithEmailAndPassword } from '@/lib/firebase/auth';
 import { FirestoreAdapter } from "@auth/firebase-adapter";
-import { db } from "@/lib/firebase/clientApp";
+import { db } from "@/lib/firebase/firestore";
+import { createSession } from './lib/session/session';
 
 export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
@@ -24,7 +25,10 @@ export const { auth, signIn, signOut } = NextAuth({
                     try {
                         const { email, password } = parsedCredentials.data;
                         const user = (await signInWithEmailAndPassword(email, password)).user;
+
                         console.log('Logged in:', user.email, ', id: ', user.uid);
+
+                        await createSession(user.uid);
 
                         return { id: user.uid, email: user.email };
                     } catch (error) {
