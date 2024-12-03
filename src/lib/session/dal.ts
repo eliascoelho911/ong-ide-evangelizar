@@ -1,14 +1,11 @@
 import 'server-only'
 
-import { cookies } from 'next/headers'
-import { decrypt } from '@/lib/session/session_crypt'
 import { cache } from 'react'
 import { redirect } from 'next/navigation'
-import { getAuthenticatedAppForUser } from '../firebase/serverApp'
+import { getSession } from './session'
 
 export const verifySession = cache(async () => {
-  const cookie = (await cookies()).get('session')?.value
-  const session = await decrypt(cookie)
+  const session = await getSession()
 
   if (!session?.userId) {
     console.log('dal: No session found, redirecting to login')
@@ -24,10 +21,7 @@ export const getUser = cache(async () => {
   if (!session) return null
 
   try {
-    const { currentUser } = await getAuthenticatedAppForUser()
-
-    console.log('dal: User fetched, currentUser:', currentUser)
-    return currentUser
+    return { userId: session.userId as string }
   } catch {
     console.log('Failed to fetch user')
     return null
