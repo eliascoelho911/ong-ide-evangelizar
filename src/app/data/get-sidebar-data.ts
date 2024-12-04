@@ -27,12 +27,11 @@ const data = (currentUrl: string): NavMainProps => {
                 content: [
                     {
                         title: "Alunos",
-                        url: "/alunos",
                         icon: GraduationCap,
-                        isOpen: isOpen(currentUrl, "/alunos"),
+                        isOpen: isOpen(currentUrl, "/dashboard/alunos"),
                         items: [
-                            createItem("Listar alunos", "/alunos"),
-                            createItem("Matricular", "/alunos/adicionar"),
+                            createItem("Listar alunos", "/dashboard/alunos"),
+                            createItem("Matricular", "/dashboard/alunos/adicionar"),
                         ],
                     }
                 ]

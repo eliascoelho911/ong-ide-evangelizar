@@ -20,7 +20,6 @@ export interface NavMainProps {
     title: string
     content: {
       title: string
-      url: string
       icon?: LucideIcon
       isOpen?: boolean
       items: {
