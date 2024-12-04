@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { encrypt, decrypt } from '@/lib/session/session_crypt'
+import { encrypt, decrypt } from '@/lib/auth/crypt'
 import { JWTPayload } from 'jose'
  
 export async function createSession(userId: string) {

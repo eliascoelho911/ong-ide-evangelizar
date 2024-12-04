@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from './lib/session/session'
+import { getSession } from './lib/auth/session'
  
 const protectedRoutes = ['/dashboard']
 const publicRoutes = ['/login', '/signup', '/']

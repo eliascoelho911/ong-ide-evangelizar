@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { signInWithEmailAndPassword } from '@/lib/firebase/auth';
-import { createSession } from '@/lib/session/session';
+import { createSession } from '@/lib/auth/session';
 import { NextResponse } from 'next/server';
 import { createAbsoluteUrl } from '@/utils/absolute-url';
 

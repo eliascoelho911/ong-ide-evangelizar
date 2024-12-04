@@ -1,6 +1,6 @@
 'use server';
 
-import { signIn } from '@/auth/sign-in';
+import { signIn } from '@/app/actions/sign-in';
 
 export async function authenticate(
   prevState: string | undefined,
