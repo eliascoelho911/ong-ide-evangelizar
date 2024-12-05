@@ -1,37 +1,30 @@
 'use client';
 
-import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { StudentSimpleData } from "@/lib/types";
 
-type StudentProps = {
-  image: string;
-  name: string;
-  age: number;
-  onClick?: () => void;
-};
-
-const StudentCard: React.FC<StudentProps> = ({ image, name, age, onClick }) => {
+const StudentCard: React.FC<{
+  student: StudentSimpleData;
+  onClick: () => void;
+}> = ({ student, onClick }) => {
   return (
     <div
       onClick={onClick}
       className="flex card items-center gap-4 rounded-xl bg-muted/50 p-4 shadow-md transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:cursor-pointer"
     >
-      <Image
-        src={image}
-        alt={name}
-        width={150}
-        height={150}
-        className="h-24 w-24 rounded-full object-cover"
-      />
+      <Avatar>
+        {student?.avatar && <AvatarImage src={student.avatar} />}
+        <AvatarFallback>{student.name.charAt(0)}</AvatarFallback>
+      </Avatar>
       <div>
-        <h2 className="text-lg font-bold">{name}</h2>
-        <p className="text-sm text-muted-foreground">Idade: {age}</p>
+        <h2 className="text-lg font-bold">{student.name}</h2>
       </div>
     </div>
   );
 };
 
 type StudentListProps = {
-  students: StudentProps[];
+  students: StudentSimpleData[];
 };
 
 export const StudentList: React.FC<StudentListProps> = ({ students }) => {
@@ -44,9 +37,7 @@ export const StudentList: React.FC<StudentListProps> = ({ students }) => {
       {students.map((student, index) => (
         <StudentCard
           key={index}
-          image={student.image}
-          name={student.name}
-          age={student.age}
+          student={student}
           onClick={() => handleStudentClick(student.name)}
         />
       ))}

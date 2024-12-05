@@ -7,6 +7,8 @@ export type User = {
     avatar?: string
 }
 
-export function getFullName(user: User) {
-    return `${user.firstName} ${user.lastName}`
+export type StudentSimpleData = {
+    id: string
+    name: string
+    avatar?: string
 }

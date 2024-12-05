@@ -1,4 +1,4 @@
-import { getFullName, User } from '@/lib/types';
+import { User } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
     DropdownMenu,
@@ -13,6 +13,7 @@ import { AppSidebar } from '@/app/components/app-sidebar';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '../ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
 import { signOut } from '@/app/actions/sign-out';
+import { getFullName } from '@/utils/user';
 
 function UserAvatar({ user }: { user: User }) {
     return (
