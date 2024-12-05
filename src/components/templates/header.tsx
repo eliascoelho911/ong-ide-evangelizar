@@ -12,6 +12,7 @@ import { LogOut } from 'lucide-react';
 import { AppSidebar } from '@/app/components/app-sidebar';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '../ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
+import { signOut } from '@/app/actions/sign-out';
 
 function UserAvatar({ user }: { user: User }) {
     return (
@@ -25,7 +26,7 @@ function UserAvatar({ user }: { user: User }) {
             <DropdownMenuContent>
                 <DropdownMenuLabel>{getFullName(user)}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem><LogOut /> Sair</DropdownMenuItem>
+                <DropdownMenuItem onClick={signOut}><LogOut /> Sair</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )
