@@ -7,7 +7,7 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar";
 import Logo from "@/components/ui/logo";
-import { getNavMainData } from "@/app/data/get-sidebar-data";
+import { getNavMainData } from "@/data/get-sidebar-data";
 import { usePathname } from "next/navigation";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
