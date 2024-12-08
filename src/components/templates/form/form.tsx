@@ -21,7 +21,10 @@ export default function FormTemplate({ edit, schema, student }: FormProps) {
     fields.reduce((acc, field) => {
       acc[field.id] = z.string({
         required_error: field.is_required ? `${field.name} é obrigatório` : undefined,
-      });
+      })
+      if (field.pattern) {
+        acc[field.id] = acc[field.id].regex(new RegExp(field.pattern), { message: `${field.name} não é válido` })
+      }
       return acc;
     }, {} as Record<string, z.ZodString>)
   ).partial().required(
@@ -39,6 +42,8 @@ export default function FormTemplate({ edit, schema, student }: FormProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    // show alert
+    alert("Form Data: " + JSON.stringify(values, null, 2));
     console.log("Form Data:", values);
   };
 
