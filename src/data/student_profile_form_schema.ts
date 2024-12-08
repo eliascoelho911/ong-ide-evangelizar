@@ -1,4 +1,4 @@
-import { FormSchema } from '@/components/templates/form/form-schema';
+import { FormSchema } from '@/components/templates/form/schema';
 
 export const studentProfileFormSchema: FormSchema = {
     sessions: [
@@ -11,7 +11,7 @@ export const studentProfileFormSchema: FormSchema = {
                     id: 'informacoes-pessoais',
                     fields: [
                         {
-                            id: 'nome-completo',
+                            id: 'nome',
                             name: 'Nome Completo',
                             type: 'text',
                             is_required: true,
@@ -68,6 +68,7 @@ export const studentProfileFormSchema: FormSchema = {
                             id: 'city',
                             name: 'Cidade',
                             type: 'select',
+                            options: ['São Paulo', 'Rio de Janeiro'], // Adicionar outras cidades
                             is_required: true,
                         }
                     ]

@@ -1,11 +1,13 @@
 'use client';
 
-import FormField from "@/components/templates/form/form-field";
-import { Button } from "@/components/ui/button";
-import { useForm, FormProvider } from "react-hook-form";
-import { SessionSchema } from "./form-schema";
+import FieldInput from "@/components/templates/form/field";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form";
+import { SessionSchema } from "./schema";
 import { Student } from "@/lib/types/student";
 import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 
 interface FormProps {
   edit: boolean;
@@ -14,50 +16,60 @@ interface FormProps {
 }
 
 export default function FormTemplate({ edit, schema, student }: FormProps) {
-  const methods = useForm({
-    defaultValues: student
-  });
-  const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
-    // Lide com a submissão do formulário, por exemplo, enviar para uma API
-  };
-  const groups = schema.groups.map((group) => ({
-    ...group,
-    fields: group.fields.map((field) => ({
-      ...field,
-      value: student.data[field.id]?.toString()
-    }))
-  }));
+  const fields = schema.groups.flatMap((group) => group.fields)
+  const formSchema = z.object(
+    fields.reduce((acc, field) => {
+      acc[field.id] = z.string({
+        required_error: field.is_required ? `${field.name} é obrigatório` : undefined,
+      });
+      return acc;
+    }, {} as Record<string, z.ZodString>)
+  ).partial().required(
+    fields.reduce((acc, field) => {
+      if (field.is_required) {
+        acc[field.id] = true
+      }
+      return acc;
+    }, {} as Record<string, true | undefined>)
+  );
 
-  z.object({
-    username: z.string({
-      required_error: "Username is required.",
-    }).min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-  })
+  const form = useForm<z.infer<typeof formSchema>>({
+    defaultValues: student.data,
+    resolver: zodResolver(formSchema),
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("Form Data:", values);
+  };
 
   return (
-    <main>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          {groups.map((group, idx) => (
-            <div key={idx} className="mt-8">
-              <h2 className="mb-4 text-xl font-semibold">{group.name}</h2>
+    <div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {schema.groups.map((group) => (
+            <div key={group.id}>
+              <h2 className="mt-8 mb-4 text-xl font-semibold">{group.name}</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {group.fields.map((field, index) => (
-                  <FormField key={index} field={field} />
+                {group.fields.map((field) => (
+                  <FormField
+                    key={field.id}
+                    control={form.control}
+                    name={field.id}
+                    render={({ field: formField }) => (
+                      <FormItem>
+                        <FormLabel>{field.name}</FormLabel>
+                        <FieldInput field={field} onSelectChange={formField.onChange} {...formField} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 ))}
               </div>
             </div>
           ))}
-          {edit && (
-            <Button type="submit" className="mt-4">
-              Salvar
-            </Button>
-          )}
+          <Button type="submit" className="btn">{edit ? "Salvar" : "Enviar"}</Button>
         </form>
-      </FormProvider>
-    </main>
+      </Form>
+    </div>
   );
 }

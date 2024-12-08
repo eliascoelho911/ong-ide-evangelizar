@@ -1,5 +1,5 @@
 import FormTemplate from "@/components/templates/form/form"
-import { SessionSchema } from "@/components/templates/form/form-schema"
+import { SessionSchema } from "@/components/templates/form/schema"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { studentProfileFormSchema } from "@/data/student_profile_form_schema"
 import { getStudentFullDataDTO } from "@/lib/data/student"
