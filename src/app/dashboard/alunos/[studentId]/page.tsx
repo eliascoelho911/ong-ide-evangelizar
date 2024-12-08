@@ -2,6 +2,7 @@ import FormTemplate from "@/components/templates/form/form"
 import { SessionSchema } from "@/components/templates/form/form-schema"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { studentProfileFormSchema } from "@/data/student_profile_form_schema"
+import { getStudentFullDataDTO } from "@/lib/data/student"
 
 export default async function Page({
     params,
@@ -9,6 +10,12 @@ export default async function Page({
     params: Promise<{ studentId: string }>
 }) {
     const studentId = (await params).studentId
+    const student = await getStudentFullDataDTO(studentId)
+
+    if (student === null) {
+        return <div>Aluno não encontrado</div> 
+    }
+
     const tabs = studentProfileFormSchema.sessions.map(session => ({
         id: session.id,
         label: session.name
@@ -25,7 +32,7 @@ export default async function Page({
                 </TabsList>
                 {tabs.map(tab => (
                     <TabsContent key={tab.id} value={tab.id}>
-                        <FormTemplate edit={true} schema={getSession(tab.id)} />
+                        <FormTemplate edit={true} schema={getSession(tab.id)} student={student} />
                     </TabsContent>
                 ))}
             </Tabs>

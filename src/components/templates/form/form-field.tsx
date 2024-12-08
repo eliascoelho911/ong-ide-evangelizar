@@ -22,6 +22,7 @@ const FormField: React.FC<FieldProps> = ({ field }) => {
     id: field.id,
     placeholder: field.name,
     disabled: field.editable === false,
+    defaultValue: field.value, // Add defaultValue here
     ...register(field.name, {
       required: field.is_required ? `${field.name} é obrigatório` : false,
       pattern: field.pattern ? new RegExp(field.pattern) : undefined,
@@ -48,7 +49,7 @@ const FormField: React.FC<FieldProps> = ({ field }) => {
       )}
       {field.type === "textarea" && <Textarea {...commonProps} />}
       {errors[field.name] && (
-        <p className="mt-1 text-sm text-red-600">{errors[field.name]?.message as string}</p>
+        <p className="mt-2 text-sm text-red-600">{errors[field.name]?.message as string}</p>
       )}
     </div>
   );

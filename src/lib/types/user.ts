@@ -6,9 +6,3 @@ export type User = {
     lastName: string
     avatar?: string
 }
-
-export type StudentSimpleData = {
-    id: string
-    name: string
-    avatar?: string
-}

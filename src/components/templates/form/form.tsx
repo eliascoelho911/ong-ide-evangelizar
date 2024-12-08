@@ -4,19 +4,29 @@ import FormField from "@/components/templates/form/form-field";
 import { Button } from "@/components/ui/button";
 import { useForm, FormProvider } from "react-hook-form";
 import { SessionSchema } from "./form-schema";
+import { Student } from "@/lib/types/student";
 
 interface FormProps {
   edit: boolean;
   schema: SessionSchema;
+  student: Student;
 }
 
-function FormTemplate({ edit, schema }: FormProps) {
-  const methods = useForm();
+export default function FormTemplate({ edit, schema, student }: FormProps) {
+  const methods = useForm({
+    defaultValues: student
+  });
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
     // Lide com a submissão do formulário, por exemplo, enviar para uma API
   };
-  const groups = schema.groups;
+  const groups = schema.groups.map((group) => ({
+    ...group,
+    fields: group.fields.map((field) => ({
+      ...field,
+      value: student[field.id]?.toString()
+    }))
+  }));
 
   return (
     <main>
@@ -42,5 +52,3 @@ function FormTemplate({ edit, schema }: FormProps) {
     </main>
   );
 }
-
-export default FormTemplate;
