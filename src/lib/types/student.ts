@@ -5,5 +5,5 @@ export type StudentSimpleData = {
 }
 
 export type Student = StudentSimpleData & {
-    [field: string]: string | number | boolean
+    data: { [field: string]: string }
 }

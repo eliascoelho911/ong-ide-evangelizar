@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useForm, FormProvider } from "react-hook-form";
 import { SessionSchema } from "./form-schema";
 import { Student } from "@/lib/types/student";
+import { z } from "zod";
 
 interface FormProps {
   edit: boolean;
@@ -24,9 +25,17 @@ export default function FormTemplate({ edit, schema, student }: FormProps) {
     ...group,
     fields: group.fields.map((field) => ({
       ...field,
-      value: student[field.id]?.toString()
+      value: student.data[field.id]?.toString()
     }))
   }));
+
+  z.object({
+    username: z.string({
+      required_error: "Username is required.",
+    }).min(2, {
+      message: "Username must be at least 2 characters.",
+    }),
+  })
 
   return (
     <main>

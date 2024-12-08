@@ -26,10 +26,11 @@ export async function getStudentFullDataDTO(studentId: string): Promise<Student 
         const docData = docSnap.data();
 
         if (docData) {
+            const data = docData.data as { [field: string]: string }
             const student = {
                 id: docSnap.id,
-                name: docData['nome-completo'] as string,
-                ...docData
+                name: data['nome-completo'],
+                data: data
             }
             resolve(student);
         } else {
