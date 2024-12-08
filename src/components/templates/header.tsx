@@ -9,8 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LogOut } from 'lucide-react';
-import { AppSidebar } from '@/app/components/app-sidebar';
-import { SidebarProvider, SidebarInset, SidebarTrigger } from '../ui/sidebar';
+import { SidebarInset, SidebarTrigger } from '../ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
 import { signOut } from '@/app/actions/sign-out';
 import { getFullName } from '@/utils/user';
@@ -37,6 +36,8 @@ export function Header({ user, children }: { user?: User, children: React.ReactN
     return (
         <header className="flex h-16 shrink-0 items-center justify-between border-b px-4">
             <div className="flex items-center gap-2">
+                <SidebarTrigger className="-ml-1" />
+                <Separator orientation="vertical" className="mr-2 h-4" />
                 {children}
             </div>
             {user && <UserAvatar user={user} />}
@@ -56,18 +57,13 @@ export function ContentWithHeader(
     }
 ) {
     return (
-        <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-                <Header user={user}>
-                    <SidebarTrigger className="-ml-1" />
-                    <Separator orientation="vertical" className="mr-2 h-4" />
-                    {headerChildren}
-                </Header>
-                <main className="flex-1 p-4">
-                    {children}
-                </main>
-            </SidebarInset>
-        </SidebarProvider>
+        <SidebarInset>
+            <Header user={user}>
+                {headerChildren}
+            </Header>
+            <main className="flex-1 p-4">
+                {children}
+            </main>
+        </SidebarInset>
     )
 }

@@ -3,28 +3,27 @@
 import FormField from "@/components/templates/form/form-field";
 import { Button } from "@/components/ui/button";
 import { useForm, FormProvider } from "react-hook-form";
-import { Group } from "./form-schema";
+import { SessionSchema } from "./form-schema";
 
 interface FormProps {
-  title: string;
   edit: boolean;
-  content: Group[];
+  schema: SessionSchema;
 }
 
-function FormTemplate({ title, edit, content }: FormProps) {
+function FormTemplate({ edit, schema }: FormProps) {
   const methods = useForm();
   const onSubmit = (data: any) => {
     console.log("Form Data:", data);
     // Lide com a submissão do formulário, por exemplo, enviar para uma API
   };
+  const groups = schema.groups;
 
   return (
     <main>
-      <h1 className="mb-6 text-2xl font-bold">{title}</h1> {/* TODO criar componente para reutilizar o título do Dashboard */}
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          {content.map((group, idx) => (
-            <div key={idx} className="mb-8">
+          {groups.map((group, idx) => (
+            <div key={idx} className="mt-8">
               <h2 className="mb-4 text-xl font-semibold">{group.name}</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {group.fields.map((field, index) => (

@@ -1,8 +1,8 @@
 export interface FormSchema {
-    categories: Category[];
+    sessions: SessionSchema[];
 }
 
-export interface Category {
+export interface SessionSchema {
     name: string;
     id: string;
     groups: Group[];
@@ -10,6 +10,7 @@ export interface Category {
 
 export interface Group {
     name: string;
+    id: string;
     fields: Field[];
 }
 
@@ -18,7 +19,6 @@ export interface Field {
     name: string;
     type: 'text' | 'textarea' | 'select';
     is_required?: boolean;
-    is_dynamic?: boolean;
     editable?: boolean;
     pattern?: string;
     options?: string[];

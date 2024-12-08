@@ -1,13 +1,14 @@
 import { FormSchema } from '@/components/templates/form/form-schema';
 
-export const studentProfileDataSchema: FormSchema = {
-    categories: [
+export const studentProfileFormSchema: FormSchema = {
+    sessions: [
         {
             name: 'Dados Pessoais',
             id: 'dados-pessoais',
             groups: [
                 {
                     name: 'Informações Pessoais',
+                    id: 'informacoes-pessoais',
                     fields: [
                         {
                             id: 'nome-completo',
@@ -47,6 +48,7 @@ export const studentProfileDataSchema: FormSchema = {
                 },
                 {
                     name: 'Naturalidade',
+                    id: 'naturalidade',
                     fields: [
                         {
                             id: 'country',
@@ -67,7 +69,6 @@ export const studentProfileDataSchema: FormSchema = {
                             name: 'Cidade',
                             type: 'select',
                             is_required: true,
-                            is_dynamic: true,
                         }
                     ]
                 }
@@ -79,6 +80,7 @@ export const studentProfileDataSchema: FormSchema = {
             groups: [
                 {
                     name: 'Endereço Residencial',
+                    id: 'endereco-residencial',
                     fields: [
                         {
                             id: 'cep',
@@ -92,7 +94,6 @@ export const studentProfileDataSchema: FormSchema = {
                             name: 'Logradouro',
                             type: 'text',
                             is_required: true,
-                            is_dynamic: true,
                         },
                         {
                             id: 'numero',
@@ -110,21 +111,18 @@ export const studentProfileDataSchema: FormSchema = {
                             name: 'Bairro',
                             type: 'text',
                             is_required: true,
-                            is_dynamic: true,
                         },
                         {
                             id: 'city',
                             name: 'Cidade',
                             type: 'text',
                             is_required: true,
-                            is_dynamic: true,
                         },
                         {
                             id: 'state',
                             name: 'Estado',
                             type: 'text',
                             is_required: true,
-                            is_dynamic: true,
                         }
                     ]
                 }
@@ -136,35 +134,36 @@ export const studentProfileDataSchema: FormSchema = {
             groups: [
                 {
                     name: 'Responsável',
+                    id: 'responsavel',
                     fields: [
                         {
-                            id: 'responsavel-nome-completo-1',
+                            id: 'responsavel-nome-completo',
                             name: 'Nome Completo',
                             type: 'text',
                             is_required: true,
                         },
                         {
-                            id: 'responsavel-cpf-1',
+                            id: 'responsavel-cpf',
                             name: 'CPF',
                             type: 'text',
                             is_required: true,
                             pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
                         },
                         {
-                            id: 'responsavel-rg-1',
+                            id: 'responsavel-rg',
                             name: 'RG',
                             type: 'text',
                             is_required: true,
                             pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1}$'
                         },
                         {
-                            id: 'responsavel-parentesco-1',
+                            id: 'responsavel-parentesco',
                             name: 'Parentesco',
                             type: 'text',
                             is_required: true,
                         },
                         {
-                            id: 'responsavel-telefone-1',
+                            id: 'responsavel-telefone',
                             name: 'Telefone',
                             type: 'text',
                             is_required: true,
@@ -172,44 +171,6 @@ export const studentProfileDataSchema: FormSchema = {
                         }
                     ]
                 },
-                {
-                    name: 'Responsável',
-                    fields: [
-                        {
-                            id: 'responsavel-nome-completo-2',
-                            name: 'Nome Completo',
-                            type: 'text',
-                            is_required: true,
-                        },
-                        {
-                            id: 'responsavel-cpf-2',
-                            name: 'CPF',
-                            type: 'text',
-                            is_required: true,
-                            pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
-                        },
-                        {
-                            id: 'responsavel-rg-2',
-                            name: 'RG',
-                            type: 'text',
-                            is_required: true,
-                            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1}$'
-                        },
-                        {
-                            id: 'responsavel-parentesco-2',
-                            name: 'Parentesco',
-                            type: 'text',
-                            is_required: true,
-                        },
-                        {
-                            id: 'responsavel-telefone-2',
-                            name: 'Telefone',
-                            type: 'text',
-                            is_required: true,
-                            pattern: '^\\(\\d{2}\\) \\d{4,5}-\\d{4}$'
-                        }
-                    ]
-                }
             ]
         },
         {
@@ -218,6 +179,7 @@ export const studentProfileDataSchema: FormSchema = {
             groups: [
                 {
                     name: 'Informações Adicionais',
+                    id: 'informacoes-adicionais',
                     fields: [
                         {
                             id: 'situacao',
