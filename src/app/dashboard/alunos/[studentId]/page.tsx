@@ -16,27 +16,8 @@ export default async function Page({
         return <div>Aluno não encontrado</div> 
     }
 
-    const tabs = studentProfileFormSchema.sessions.map(session => ({
-        id: session.id,
-        label: session.name
-    }))
-    const selectedTab = tabs[0].id
-
     return (
-        <div>
-            <Tabs defaultValue={selectedTab}>
-                <TabsList className={"grid w-full grid-cols-" + tabs.length}>
-                    {tabs.map(tab => (
-                        <TabsTrigger key={tab.id} value={tab.id}>{tab.label}</TabsTrigger>
-                    ))}
-                </TabsList>
-                {tabs.map(tab => (
-                    <TabsContent key={tab.id} value={tab.id}>
-                        <FormTemplate edit={true} schema={getSession(tab.id)} student={student} />
-                    </TabsContent>
-                ))}
-            </Tabs>
-        </div>)
+        <FormTemplate edit={true} schema={studentProfileFormSchema} defaultValues={student.data} />)
 }
 
 function getSession(id: string): SessionSchema {
