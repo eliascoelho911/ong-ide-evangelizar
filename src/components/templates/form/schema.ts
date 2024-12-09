@@ -17,7 +17,6 @@ export interface Group {
 export interface Field {
     id: string;
     name: string;
-    value?: string;
     type: 'text' | 'textarea' | 'select';
     is_required?: boolean;
     editable?: boolean;
