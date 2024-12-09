@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { StudentSimpleData } from "@/lib/types";
+import { StudentSimpleData } from "@/lib/types/student";
 
 const StudentCard: React.FC<{
   student: StudentSimpleData;
@@ -14,7 +14,7 @@ const StudentCard: React.FC<{
     >
       <Avatar>
         {student?.avatar && <AvatarImage src={student.avatar} />}
-        <AvatarFallback>{student.name.charAt(0)}</AvatarFallback>
+        <AvatarFallback>{student.name?.charAt(0)}</AvatarFallback>
       </Avatar>
       <div>
         <h2 className="text-lg font-bold">{student.name}</h2>

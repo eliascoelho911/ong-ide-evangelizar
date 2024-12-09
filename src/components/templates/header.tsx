@@ -1,4 +1,4 @@
-import { User } from '@/lib/types';
+import { User } from '@/lib/types/user';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
     DropdownMenu,
@@ -13,15 +13,13 @@ import { SidebarInset, SidebarTrigger } from '../ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
 import { signOut } from '@/app/actions/sign-out';
 import { getFullName } from '@/utils/user';
+import UserAvatar from '../user-avatar';
 
-function UserAvatar({ user }: { user: User }) {
+function UserAvatarWithDropdown({ user }: { user: User }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Avatar>
-                    {user?.avatar && <AvatarImage src={user.avatar} />}
-                    <AvatarFallback>{user.firstName.charAt(0)}</AvatarFallback>
-                </Avatar>
+                <UserAvatar avatar={user.avatar} fallback={user.firstName.charAt(0)} />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>{getFullName(user)}</DropdownMenuLabel>
@@ -40,7 +38,7 @@ export function Header({ user, children }: { user?: User, children: React.ReactN
                 <Separator orientation="vertical" className="mr-2 h-4" />
                 {children}
             </div>
-            {user && <UserAvatar user={user} />}
+            {user && <UserAvatarWithDropdown user={user} />}
         </header>
     )
 }

@@ -24,12 +24,7 @@ export default function FormTemplate({ edit, schema, defaultValues }: FormProps)
   const zFormSchema = buildZodSchema(fields);
   
   const form = useForm<z.infer<typeof zFormSchema>>({
-    defaultValues: {
-      ...fields.reduce((acc, field) => {
-        acc[field.id] = defaultValues[field.id] ?? "";
-        return acc;
-      }, {} as Record<string, string>)
-    },
+    defaultValues: defaultValues,
     resolver: zodResolver(zFormSchema)
   });
 
@@ -63,6 +58,7 @@ export default function FormTemplate({ edit, schema, defaultValues }: FormProps)
     console.log("Form Data:", values);
   };
 
+  // Função chamada quando o formulário tem erros
   function onInvalid(errors: any) {
     const errorMessages = Object.values(errors)
       .map((error: any) => error.message)

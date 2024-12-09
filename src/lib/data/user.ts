@@ -1,5 +1,5 @@
 import 'server-only'
-import { User } from '../types'
+import { User } from '@/lib/types/user'
 import { db } from '../firebase/firestore'
 import { doc, getDoc } from 'firebase/firestore';
 

@@ -11,8 +11,8 @@ export async function getAllStudentsSimpleDataDTO(): Promise<StudentSimpleData[]
             const data = doc.data()
             const student = {
                 id: doc.id,
-                name: data['nome-completo'] as string,
-                avatar: data.avatar
+                name: data.data.personal_information_full_name as string,
+                avatar: data.avatar as string
             }
             students.push(student)
         });
@@ -26,10 +26,11 @@ export async function getStudentFullDataDTO(studentId: string): Promise<Student 
         const docData = docSnap.data();
 
         if (docData) {
-            const data = docData.data as { [field: string]: string }
+            const data = docData.data;
             const student = {
                 id: docSnap.id,
-                name: data['nome-completo'],
+                name: data.personal_information_full_name as string,
+                avatar: docData.avatar as string,
                 data: data
             }
             resolve(student);
