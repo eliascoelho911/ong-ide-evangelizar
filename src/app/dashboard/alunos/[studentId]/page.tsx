@@ -1,7 +1,7 @@
-import FormTemplate from "@/components/templates/form/form"
-import { studentProfileFormSchema } from "@/data/student_profile_form_schema"
+import { simpleStudentProfileFormSchema } from "@/data/student_profile_form_schema"
 import { getStudentFullDataDTO } from "@/lib/data/student"
 import UserAvatar from "@/components/user-avatar"
+import StudentForm from "./student-form-wrapper"
 
 export default async function Page({
     params,
@@ -11,7 +11,7 @@ export default async function Page({
     const studentId = (await params).studentId
     const student = await getStudentFullDataDTO(studentId)
 
-    if (student === null) {
+    if (student === undefined) {
         return <div>Aluno não encontrado</div>
     }
 
@@ -27,10 +27,11 @@ export default async function Page({
                 {student.data.guardian_full_name && <p className="text-sm text-muted-foreground">de {student.data.guardian_full_name}</p>}
             </div>
 
-            <FormTemplate
+            <StudentForm
                 edit={true}
-                schema={studentProfileFormSchema}
-                defaultValues={student.data} />
+                schema={simpleStudentProfileFormSchema}
+                defaultValues={student.data}
+                studentId={studentId} />
         </div>
     )
 }

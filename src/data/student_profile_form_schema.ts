@@ -207,3 +207,55 @@ export const studentProfileFormSchema: FormSchema = {
         }
     ]
 };
+
+export const simpleStudentProfileFormSchema: FormSchema = {
+    sessions: [
+        {
+            name: 'Dados Pessoais',
+            id: 'dados_pessoais',
+            groups: [
+                {
+                    name: 'Informações Pessoais',
+                    id: 'personal_information',
+                    fields: [
+                        {
+                            id: 'personal_information_full_name',
+                            name: 'Nome Completo',
+                            type: 'text',
+                            is_required: true,
+                        },
+                        {
+                            id: 'personal_information_birthday',
+                            name: 'Data de Nascimento',
+                            type: 'text',
+                            is_required: true,
+                            pattern: '^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\\d{4}$'
+                        },
+                        {
+                            id: 'personal_information_cpf',
+                            name: 'CPF',
+                            type: 'text',
+                            is_required: true,
+                            pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$'
+                        },
+                        {
+                            id: 'personal_information_rg',
+                            name: 'RG',
+                            type: 'text',
+                            is_required: true,
+                            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1}$'
+                        },
+                        {
+                            id: 'personal_information_gender',
+                            name: 'Sexo',
+                            type: 'select',
+                            is_required: true,
+                            options: ['Masculino', 'Feminino', 'Outro']
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+};
+

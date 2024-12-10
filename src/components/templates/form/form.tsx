@@ -14,9 +14,11 @@ interface FormProps {
   edit: boolean;
   schema: FormSchema;
   defaultValues: { [key: string]: string };
+  onValidSubmit?: (values: { [key: string]: string }) => void;
+  onInvalidSubmit?: (errors: any) => void;
 }
 
-export default function FormTemplate({ edit, schema, defaultValues }: FormProps) {
+export default function FormTemplate({ edit, schema, defaultValues, onValidSubmit, onInvalidSubmit }: FormProps) {
   const fields = schema.sessions.flatMap(session => 
     session.groups.flatMap(group => group.fields)
   );
@@ -54,16 +56,15 @@ export default function FormTemplate({ edit, schema, defaultValues }: FormProps)
   }, [form.formState.errors, tabs]);
 
   function onValid(values: z.infer<typeof zFormSchema>) {
-    alert("Form Data: " + JSON.stringify(values, null, 2));
-    console.log("Form Data:", values);
+    if (onValidSubmit) {
+      onValidSubmit(values);
+    }
   };
 
-  // Função chamada quando o formulário tem erros
   function onInvalid(errors: any) {
-    const errorMessages = Object.values(errors)
-      .map((error: any) => error.message)
-      .join('\n');
-    alert("Form Errors:\n" + errorMessages);
+    if (onInvalidSubmit) {
+      onInvalidSubmit(errors);
+    }
   }
 
   return (
