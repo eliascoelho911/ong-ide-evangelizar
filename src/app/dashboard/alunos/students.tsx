@@ -2,6 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { StudentSimpleData } from "@/lib/types/student";
+import { useRouter } from 'next/navigation';
 
 const StudentCard: React.FC<{
   student: StudentSimpleData;
@@ -28,8 +29,9 @@ type StudentListProps = {
 };
 
 export const StudentList: React.FC<StudentListProps> = ({ students }) => {
-  const handleStudentClick = (studentName: string) => {
-    alert(`Aluno selecionado: ${studentName}`);
+  const router = useRouter();
+  const handleStudentClick = (studentId: string) => {
+    router.push(`/dashboard/alunos/${studentId}`);
   };
 
   return (
@@ -38,7 +40,7 @@ export const StudentList: React.FC<StudentListProps> = ({ students }) => {
         <StudentCard
           key={index}
           student={student}
-          onClick={() => handleStudentClick(student.name)}
+          onClick={() => handleStudentClick(student.id)}
         />
       ))}
     </div>

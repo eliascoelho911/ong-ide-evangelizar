@@ -25,11 +25,12 @@ type TabbedFormContentProps = {
 
 type TabbedFormProps = {
   schema: FormSchema;
+  values: { [key: string]: string };
 }
 
 type TabbedEditableFormProps = {
   schema: FormSchema;
-  defaultValues: { [key: string]: string };
+  values: { [key: string]: string };
   onValidSubmit?: (values: { [key: string]: string }) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onInvalidSubmit?: (errors: { [key: string]: any }) => void;
@@ -74,7 +75,7 @@ export function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), ch
   </Tabs>)
 }
 
-export function TabbedForm({ schema }: TabbedFormProps) {
+export function TabbedForm({ schema, values }: TabbedFormProps) {
   const tabs = getTabs(schema);
   return (
     <div className="flex w-fit">
@@ -85,7 +86,7 @@ export function TabbedForm({ schema }: TabbedFormProps) {
               {field.name}
             </p>
             <p className="text-sm text-muted-foreground">
-              teste
+              {values[field.id]}
             </p>
           </div>
         )}
@@ -94,14 +95,14 @@ export function TabbedForm({ schema }: TabbedFormProps) {
   )
 }
 
-export function TabbedEditableForm({ schema, defaultValues, onValidSubmit, onInvalidSubmit }: TabbedEditableFormProps) {
+export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSubmit }: TabbedEditableFormProps) {
   const fields = schema.sessions.flatMap(session =>
     session.groups.flatMap(group => group.fields)
   );
 
   const zFormSchema = buildZodSchema(fields);
   const form = useForm<z.infer<typeof zFormSchema>>({
-    defaultValues: defaultValues,
+    defaultValues: values,
     resolver: zodResolver(zFormSchema)
   });
   const tabs = getTabs(schema);

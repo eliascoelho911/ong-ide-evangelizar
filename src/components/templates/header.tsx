@@ -9,10 +9,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { LogOut } from 'lucide-react';
 import { SidebarInset, SidebarTrigger } from '../ui/sidebar';
-import { Separator } from '@radix-ui/react-separator';
 import { signOut } from '@/app/actions/sign-out';
-import { getFullName } from '@/utils/user';
 import UserAvatar from '../user-avatar';
+import { getFullName } from '@/lib/types/user';
+import Content from './content';
+import { Separator } from '../ui/separator';
 
 function UserAvatarWithDropdown({ user }: { user: User }) {
     return (
@@ -58,9 +59,9 @@ export function ContentWithHeader(
             <Header user={user}>
                 {headerChildren}
             </Header>
-            <main className="flex-1 p-4">
+            <Content>
                 {children}
-            </main>
+            </Content>
         </SidebarInset>
     )
 }

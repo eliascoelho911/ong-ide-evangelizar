@@ -1,5 +1,5 @@
 import 'server-only'
-import { Student, StudentSimpleData } from '@/lib/types/student'
+import { StudentFullData, StudentSimpleData } from '@/lib/types/student'
 import { db } from '../firebase/firestore'
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { verifySession } from '../auth/api';
@@ -27,7 +27,7 @@ export async function getAllStudentsSimpleDataDTO(): Promise<StudentSimpleData[]
     });
 }
 
-export async function getStudentFullDataDTO(studentId: string): Promise<Student | undefined> {
+export async function getStudentFullDataDTO(studentId: string): Promise<StudentFullData | undefined> {
     return new Promise(async (resolve) => {
         const session = await verifySession()
 
@@ -40,7 +40,7 @@ export async function getStudentFullDataDTO(studentId: string): Promise<Student 
             if (docData) {
                 const data = docData.data;
                 const student = {
-                    id: docSnap.id,
+                    id: studentId,
                     name: data?.personal_information_full_name as string,
                     avatar: docData?.avatar as string,
                     data: data

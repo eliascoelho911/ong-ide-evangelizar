@@ -6,29 +6,23 @@ import { FormSchema } from "@/components/templates/form/schema";
 interface StudentFormProps {
     edit: boolean;
     schema: FormSchema;
-    defaultValues: { [key: string]: string };
+    values: { [key: string]: string };
     studentId: string;
 }
 
 export default function StudentForm({
     edit,
     schema,
-    defaultValues,
+    values,
     studentId,
 }: StudentFormProps) {
 
     const onValidSubmit = async (values: { [key: string]: string }) => {
-        const student = {
-            id: studentId,
-            name: values.personal_information_full_name,
-            data: values
-        };
-        
         try {
             const response = await fetch(`/api/student/data/${studentId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(student.data),
+                body: JSON.stringify(values),
             });
 
             if (!response.ok) {
@@ -52,9 +46,9 @@ export default function StudentForm({
         edit ?
         <TabbedEditableForm
             schema={schema}
-            defaultValues={defaultValues}
+            values={values}
             onValidSubmit={onValidSubmit}
             onInvalidSubmit={onInvalidSubmit}
-        /> : <TabbedForm schema={schema} />
+        /> : <TabbedForm schema={schema} values={values} />
     );
 }

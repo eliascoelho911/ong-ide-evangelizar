@@ -9,10 +9,7 @@ export default async function DashboardLayout({
     return (
         <SidebarProvider>
             <AppSidebar />
-            <main className="flex-1 p-4">
-                {children}
-            </main>
+            {children}
         </SidebarProvider>
-
     );
 }
