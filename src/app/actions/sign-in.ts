@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { signInWithEmailAndPassword } from '@/lib/firebase/auth';
 import { createSession } from '@/lib/auth/session';
 import { NextResponse } from 'next/server';
-import { createAbsoluteUrl } from '@/utils/absolute-url';
+import { absoluteUrl } from '@/utils/absolute-url';
 
 async function signIn(credentials: { email: string, password: string }) {
     const parsedCredentials = z
@@ -19,7 +19,7 @@ async function signIn(credentials: { email: string, password: string }) {
 
         await createSession(user.uid);
 
-        return NextResponse.redirect(createAbsoluteUrl('/dashboard'));
+        return NextResponse.redirect(absoluteUrl('/dashboard'));
     } else {
         throw parsedCredentials.error;
     }

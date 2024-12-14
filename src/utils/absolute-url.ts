@@ -1,4 +1,4 @@
-export function createAbsoluteUrl(path: string, baseUrl?: string): string {
+export function absoluteUrl(path: string, baseUrl?: string): string {
     const base = baseUrl || process.env.NEXT_PUBLIC_BASE_URL;
 
     if (!base) {

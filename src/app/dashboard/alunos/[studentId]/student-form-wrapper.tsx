@@ -1,7 +1,10 @@
 'use client';
 
+import { saveStudent } from "@/app/actions/save-student";
 import { TabbedEditableForm, TabbedForm } from "@/components/templates/form/form";
 import { FormSchema } from "@/components/templates/form/schema";
+import { getStudentRoute } from "@/utils/routes";
+import { useRouter } from "next/navigation";
 
 interface StudentFormProps {
     edit: boolean;
@@ -16,24 +19,16 @@ export default function StudentForm({
     values,
     studentId,
 }: StudentFormProps) {
+    const router = useRouter();
 
     const onValidSubmit = async (values: { [key: string]: string }) => {
-        try {
-            const response = await fetch(`/api/student/data/${studentId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(values),
-            });
-
-            if (!response.ok) {
-                throw new Error('Falha ao salvar o aluno');
-            }
-
-            alert('Dados salvos com sucesso!');
-        } catch (error) {
-            console.error('Erro ao salvar os dados:', error);
-            alert('Erro ao salvar os dados. Tente novamente.');
+        const response = await saveStudent(studentId, values);
+        if (!response.success) {
+            alert("Erro ao salvar aluno: " + response.error);
+            return;
         }
+
+        router.push(getStudentRoute(studentId, false));
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,11 +39,11 @@ export default function StudentForm({
 
     return (
         edit ?
-        <TabbedEditableForm
-            schema={schema}
-            values={values}
-            onValidSubmit={onValidSubmit}
-            onInvalidSubmit={onInvalidSubmit}
-        /> : <TabbedForm schema={schema} values={values} />
+            <TabbedEditableForm
+                schema={schema}
+                values={values}
+                onValidSubmit={onValidSubmit}
+                onInvalidSubmit={onInvalidSubmit}
+            /> : <TabbedForm schema={schema} values={values} />
     );
 }

@@ -1,15 +1,20 @@
-import { studentProfileFormSchema } from "@/data/student_profile_form_schema"
+import { simpleStudentProfileFormSchema } from "@/data/student_profile_form_schema"
 import { getStudentFullDataDTO } from "@/lib/data/student"
 import UserAvatar from "@/components/user-avatar"
 import StudentForm from "./student-form-wrapper"
 import { getBirthday, getFullName, getGuardians } from "@/lib/types/student"
 import { ContentWithHeader } from "@/components/templates/header"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { getStudentRoute, getStudentsRoute } from "@/utils/routes"
 
 export default async function Page({
     params,
+    searchParams,
 }: {
     params: Promise<{ studentId: string }>
+    searchParams: Promise<{ edit: string }>
 }) {
     const studentId = (await params).studentId
     const student = await getStudentFullDataDTO(studentId)
@@ -22,20 +27,31 @@ export default async function Page({
     const birthday = getBirthday(student)
     const guardians = getGuardians(student)
 
+    const edit = (await searchParams).edit === "true"
+
+    function EditButtons() {
+        return (
+            <Link href={getStudentRoute(studentId, !edit)}>
+                <Button variant={edit ? "secondary" : "default"}>{edit ? "Cancelar" : "Editar"}</Button>
+            </Link>
+        )
+    }
+
     return (
         <ContentWithHeader headerChildren={
-            <div className="flex w-full justify-between">
+            <div className="flex w-full justify-between items-center">
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <BreadcrumbLink href="/dashboard/alunos">Alunos</BreadcrumbLink>
+                            <BreadcrumbLink href={getStudentsRoute()}>Alunos</BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
-                        <BreadcrumbItem >
+                        <BreadcrumbItem>
                             <BreadcrumbPage>{fullName}</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
+                <EditButtons />
             </div>
         }>
             <div className="flex flex-col items-center">
@@ -50,8 +66,8 @@ export default async function Page({
                 </div>
 
                 <StudentForm
-                    edit={false}
-                    schema={studentProfileFormSchema}
+                    edit={edit}
+                    schema={simpleStudentProfileFormSchema}
                     values={student.data}
                     studentId={studentId} />
             </div>

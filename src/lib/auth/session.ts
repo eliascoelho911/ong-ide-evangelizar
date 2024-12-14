@@ -14,6 +14,11 @@ export async function createSession(userId: string) {
   })
 }
 
+export async function getCryptedSession() : Promise<string | undefined> {
+  const cookieStore = await cookies()
+  return cookieStore.get('session')?.value
+}
+
 export async function getSession() : Promise<JWTPayload | undefined> {
   const cookieStore = await cookies()
   const session = cookieStore.get('session')?.value
