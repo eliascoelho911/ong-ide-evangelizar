@@ -1,4 +1,4 @@
-import { simpleStudentProfileFormSchema } from "@/data/student_profile_form_schema"
+import { simpleStudentProfileFormSchema, studentProfileFormSchema } from "@/data/student_profile_form_schema"
 import { getStudentFullDataDTO } from "@/lib/data/student"
 import UserAvatar from "@/components/user-avatar"
 import StudentForm from "./student-form-wrapper"
@@ -28,8 +28,8 @@ export default async function Page({
             </div>
 
             <StudentForm
-                edit={true}
-                schema={simpleStudentProfileFormSchema}
+                edit={false}
+                schema={studentProfileFormSchema}
                 defaultValues={student.data}
                 studentId={studentId} />
         </div>

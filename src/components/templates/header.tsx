@@ -1,5 +1,4 @@
 import { User } from '@/lib/types/user';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
     DropdownMenu,
     DropdownMenuContent,

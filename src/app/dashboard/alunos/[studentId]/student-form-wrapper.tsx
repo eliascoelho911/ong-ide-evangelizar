@@ -1,10 +1,11 @@
 'use client';
 
-import FormTemplate from "@/components/templates/form/form";
+import { TabbedEditableForm, TabbedForm } from "@/components/templates/form/form";
+import { FormSchema } from "@/components/templates/form/schema";
 
 interface StudentFormProps {
     edit: boolean;
-    schema: any;
+    schema: FormSchema;
     defaultValues: { [key: string]: string };
     studentId: string;
 }
@@ -41,18 +42,19 @@ export default function StudentForm({
         }
     };
 
-    const onInvalidSubmit = (errors: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const onInvalidSubmit = (errors: { [key: string]: any }) => {
         console.log("Erros no formulário:", errors);
         alert("Por favor, corrija os erros antes de enviar.");
     };
 
     return (
-        <FormTemplate
-            edit={edit}
+        edit ?
+        <TabbedEditableForm
             schema={schema}
             defaultValues={defaultValues}
             onValidSubmit={onValidSubmit}
             onInvalidSubmit={onInvalidSubmit}
-        />
+        /> : <TabbedForm schema={schema} />
     );
 }

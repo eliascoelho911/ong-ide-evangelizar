@@ -1,7 +1,7 @@
 import 'server-only'
 import { Student, StudentSimpleData } from '@/lib/types/student'
 import { db } from '../firebase/firestore'
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { verifySession } from '../auth/api';
 
 export async function getAllStudentsSimpleDataDTO(): Promise<StudentSimpleData[]> {
