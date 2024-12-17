@@ -1,31 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from './lib/auth/session'
- 
-const protectedRoutes = ['/dashboard']
-const publicRoutes = ['/login', '/signup', '/']
- 
+import { absoluteUrl } from './utils/absolute-url'
+import { getLoginRoute } from './app/routes'
+
+const publicRoutes = [getLoginRoute()]
+
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
-  const isProtectedRoute = protectedRoutes.includes(path)
-  const isPublicRoute = publicRoutes.includes(path)
- 
-  const session = await getSession()
+  const isPublicRoute = publicRoutes.some(route => path.startsWith(route))
 
-  if (isProtectedRoute && !session?.userId) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl))
+  try {
+    const session = await getSession()
+    const isAuthenticated = session?.userId != undefined
+
+    if (!isPublicRoute && !isAuthenticated) {
+      console.log("Middleware: Usuário não autenticado, redirecionando para a página de login")
+      return NextResponse.redirect(absoluteUrl(getLoginRoute()))
+    }
+  } catch (error) {
+    console.error("Erro ao obter sessão:", error)
+    return NextResponse.redirect(absoluteUrl(getLoginRoute()))
   }
- 
-  if (
-    isPublicRoute &&
-    session?.userId &&
-    !req.nextUrl.pathname.startsWith('/dashboard')
-  ) {
-    return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
-  }
- 
+
+  console.log("Middleware: Usuário autenticado. Seguindo para", path)
   return NextResponse.next()
 }
- 
+
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|public|.*\\.png$|.*\\.ico$|.*\\.svg$).*)'],
 }

@@ -1,27 +1,28 @@
-import { verifySession } from "@/lib/auth/api";
-import { db } from "@/lib/firebase/firestore";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { requireAuth } from "@/lib/auth/api";
+import { fetchWithAuth } from "@/lib/auth/fetch";
+import { updateStudentData } from "@/lib/firebase/student";
+import { StudentFullData } from "@/lib/types/student";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ studentId: string }> }) {
-    const session = await verifySession()
+    return requireAuth(async () => {
+        const studentId = (await params).studentId;
+        const studentData = await req.json();
 
-    if (session === null) {
-        return new Response(null, { status: 401 });
-    }
+        try {
+            await updateStudentData(studentId, studentData);
+            return new Response(null, { status: 200 });
+        } catch {
+            return new Response(null, { status: 500 });
+        }
+    });
+}
 
-    const studentId = (await params).studentId
-    const studentData = await req.json()
-    const student = (await getDoc(doc(db, 'students', studentId))).data()
-    const newStudent = {
-        ...student,
-        data: studentData
-    }
-
-    try {
-        const docRef = doc(db, 'students', studentId);
-        await setDoc(docRef, newStudent);
-        return new Response(null, { status: 200 })
-    } catch (error) {
-        return new Response(null, { status: 500 });
-    }
+export async function performStudentDataUpdate(id: string, data: StudentFullData["data"]) {
+    return await fetchWithAuth(`api/student/data/${id}`, {
+        method: 'PUT',
+        headers: { 
+            'Content-Type': 'application/json',
+         },
+        body: JSON.stringify(data),
+    });
 }

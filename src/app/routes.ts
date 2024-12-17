@@ -5,3 +5,11 @@ export function getStudentRoute(studentId: string, edit: boolean = false): strin
 export function getStudentsRoute(): string {
     return "/dashboard/alunos";
 }
+
+export function getHomeRoute(): string {
+    return "/";
+}
+
+export function getLoginRoute(): string {
+    return "/login";
+}

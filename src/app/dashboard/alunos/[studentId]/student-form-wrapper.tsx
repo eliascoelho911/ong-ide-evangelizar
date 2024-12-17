@@ -1,9 +1,9 @@
 'use client';
 
-import { saveStudent } from "@/app/actions/save-student";
+import { saveStudent } from "@/app/actions/student";
 import { TabbedEditableForm, TabbedForm } from "@/components/templates/form/form";
 import { FormSchema } from "@/components/templates/form/schema";
-import { getStudentRoute } from "@/utils/routes";
+import { getStudentRoute } from "@/app/routes";
 import { useRouter } from "next/navigation";
 
 interface StudentFormProps {
@@ -23,8 +23,8 @@ export default function StudentForm({
 
     const onValidSubmit = async (values: { [key: string]: string }) => {
         const response = await saveStudent(studentId, values);
-        if (!response.success) {
-            alert("Erro ao salvar aluno: " + response.error);
+        if (response?.error) {
+            alert(response.error);
             return;
         }
 
@@ -33,8 +33,7 @@ export default function StudentForm({
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onInvalidSubmit = (errors: { [key: string]: any }) => {
-        console.log("Erros no formulário:", errors);
-        alert("Por favor, corrija os erros antes de enviar.");
+        console.debug("Erros no formulário:", errors);
     };
 
     return (

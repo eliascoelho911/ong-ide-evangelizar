@@ -7,7 +7,7 @@ import { ContentWithHeader } from "@/components/templates/header"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { getStudentRoute, getStudentsRoute } from "@/utils/routes"
+import { getStudentRoute, getStudentsRoute } from "@/app/routes"
 
 export default async function Page({
     params,
@@ -16,6 +16,7 @@ export default async function Page({
     params: Promise<{ studentId: string }>
     searchParams: Promise<{ edit: string }>
 }) {
+    console.log("student page")
     const studentId = (await params).studentId
     const student = await getStudentFullDataDTO(studentId)
 
