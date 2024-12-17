@@ -1,11 +1,27 @@
-import LoginForm from '@/app/components/login-form';
- 
+import { LoginForm } from "@/components/login-form"
+import Logo from "@/components/ui/logo"
+import Image from "next/image"
+
 export default function LoginPage() {
   return (
-    <main className="flex items-center justify-center md:h-screen">
-      <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
-        <LoginForm />
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <Logo />
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <LoginForm />
+          </div>
+        </div>
       </div>
-    </main>
-  );
+      <div className="relative hidden bg-muted lg:block">
+        {/* <Image
+          src="/placeholder.svg"
+          alt="Image"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        /> */}
+      </div>
+    </div>
+  )
 }

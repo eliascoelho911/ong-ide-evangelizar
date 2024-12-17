@@ -1,5 +1,6 @@
 'use client';
 
+import { getStudentRoute } from "@/app/routes";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { StudentSimpleData } from "@/lib/types/student";
 import { useRouter } from 'next/navigation';
@@ -31,7 +32,7 @@ type StudentListProps = {
 export const StudentList: React.FC<StudentListProps> = ({ students }) => {
   const router = useRouter();
   const handleStudentClick = (studentId: string) => {
-    router.push(`/dashboard/alunos/${studentId}`);
+    router.push(getStudentRoute(studentId));
   };
 
   return (

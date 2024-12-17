@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { StudentList } from "@/app/dashboard/alunos/students";
+import { StudentList } from "@/app/home/alunos/students";
 import { ContentWithHeader } from "@/components/templates/header";
 import { getLoggedUser } from "@/lib/data/logged-user";
 import { SearchForm } from "@/components/ui/search-form";

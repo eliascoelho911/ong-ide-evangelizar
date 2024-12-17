@@ -1,3 +1,4 @@
+import { getAddStudentRoute, getStudentsRoute } from "@/app/routes";
 import { NavMainProps } from "@/components/nav-dropdown";
 import { NavUserProps } from "@/components/nav-user";
 import { User } from "firebase/auth";
@@ -28,10 +29,10 @@ const data = (currentUrl: string): NavMainProps => {
                     {
                         title: "Alunos",
                         icon: GraduationCap,
-                        isOpen: isOpen(currentUrl, "/dashboard/alunos"),
+                        isOpen: isOpen(currentUrl, getStudentsRoute()),
                         items: [
-                            createItem("Listar alunos", "/dashboard/alunos"),
-                            createItem("Matricular", "/dashboard/alunos/adicionar"),
+                            createItem("Listar alunos", getStudentsRoute()),
+                            createItem("Matricular", getAddStudentRoute()),
                         ],
                     }
                 ]

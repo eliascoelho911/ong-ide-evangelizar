@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from './lib/auth/session'
 import { absoluteUrl } from './utils/absolute-url'
-import { getLoginRoute } from './app/routes'
+import { getHomeRoute, getLoginRoute, getStudentsRoute } from './app/routes'
 
 const publicRoutes = [getLoginRoute()]
 
@@ -13,16 +13,18 @@ export default async function middleware(req: NextRequest) {
     const session = await getSession()
     const isAuthenticated = session?.userId != undefined
 
-    if (!isPublicRoute && !isAuthenticated) {
-      console.log("Middleware: Usuário não autenticado, redirecionando para a página de login")
+    if (isAuthenticated && path === getLoginRoute()) {
+      return NextResponse.redirect(absoluteUrl(getStudentsRoute()))
+    } else if (!isPublicRoute && !isAuthenticated) {
       return NextResponse.redirect(absoluteUrl(getLoginRoute()))
+    } else if (path === "/" || path === getHomeRoute()) {
+      return NextResponse.redirect(absoluteUrl(getStudentsRoute()))
     }
   } catch (error) {
     console.error("Erro ao obter sessão:", error)
     return NextResponse.redirect(absoluteUrl(getLoginRoute()))
   }
 
-  console.log("Middleware: Usuário autenticado. Seguindo para", path)
   return NextResponse.next()
 }
 
