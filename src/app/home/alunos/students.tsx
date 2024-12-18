@@ -2,11 +2,11 @@
 
 import { getStudentRoute } from "@/app/routes";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { StudentSimpleData } from "@/lib/types/student";
+import { getFullName, Student } from "@/lib/types/student";
 import { useRouter } from 'next/navigation';
 
 const StudentCard: React.FC<{
-  student: StudentSimpleData;
+  student: Student;
   onClick: () => void;
 }> = ({ student, onClick }) => {
   return (
@@ -16,17 +16,17 @@ const StudentCard: React.FC<{
     >
       <Avatar>
         {student?.avatar && <AvatarImage src={student.avatar} />}
-        <AvatarFallback>{student.name?.charAt(0)}</AvatarFallback>
+        <AvatarFallback>{getFullName(student)?.charAt(0)}</AvatarFallback>
       </Avatar>
       <div>
-        <h2 className="text-lg font-bold">{student.name}</h2>
+        <h2 className="text-lg font-bold">{getFullName(student)}</h2>
       </div>
     </div>
   );
 };
 
 type StudentListProps = {
-  students: StudentSimpleData[];
+  students: Student[];
 };
 
 export const StudentList: React.FC<StudentListProps> = ({ students }) => {

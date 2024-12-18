@@ -1,16 +1,16 @@
 import { Metadata } from "next";
 import { StudentList } from "@/app/home/alunos/students";
 import { ContentWithHeader } from "@/components/templates/header";
-import { getLoggedUser } from "@/lib/data/logged-user";
+import { getLoggedUser } from "@/lib/data/user";
 import { SearchForm } from "@/components/ui/search-form";
-import { getAllStudentsSimpleDataDTO } from "@/lib/data/student";
+import { fetchAllStudents } from "@/data/students";
 
 export const metadata: Metadata = {
   title: "Alunos | ONG Ide Evangelizar",
 };
 
 export default async function StudentsPage() {
-  const students = await getAllStudentsSimpleDataDTO();
+  const students = await fetchAllStudents();
   const user = await getLoggedUser();
 
   return (

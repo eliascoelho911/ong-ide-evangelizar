@@ -1,5 +1,5 @@
 import { simpleStudentProfileFormSchema } from "@/data/student_profile_form_schema"
-import { getStudentFullDataDTO } from "@/lib/data/student"
+import { fetchStudentById } from "@/data/students"
 import UserAvatar from "@/components/user-avatar"
 import StudentForm from "./student-form-wrapper"
 import { getBirthday, getFullName, getGuardians } from "@/lib/types/student"
@@ -16,9 +16,8 @@ export default async function Page({
     params: Promise<{ studentId: string }>
     searchParams: Promise<{ edit: string }>
 }) {
-    console.log("student page")
     const studentId = (await params).studentId
-    const student = await getStudentFullDataDTO(studentId)
+    const student = await fetchStudentById(studentId)
 
     if (student === undefined) {
         return <div>Aluno não encontrado</div>

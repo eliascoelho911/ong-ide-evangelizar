@@ -1,11 +1,11 @@
 'use server';
 
-import { StudentFullData } from "@/lib/types/student";
-import { performStudentDataUpdate } from "../api/student/data/[studentId]/route";
+import { Student } from "@/lib/types/student";
+import { updateStudentData } from "@/data/students";
 
-export async function saveStudent(id: string, data: StudentFullData["data"]) {
+export async function saveStudent(id: string, data: Student["data"]) {
     try {
-        const response = await performStudentDataUpdate(id, data)
+        const response = await updateStudentData(id, data)
 
         if (!response.ok) {
             throw new Error(response.statusText);
