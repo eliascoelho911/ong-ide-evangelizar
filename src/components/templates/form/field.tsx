@@ -11,13 +11,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Field } from "./schema";
 import { FormControl } from "@/components/ui/form";
 
-export default function FieldInput({ field, onSelectChange, ...props }: { field: Field, onSelectChange?: (value: string) => void }) {
+export default function FieldInput({ field, onFormChange, ...props }: { field: Field, onFormChange?: (value: string | File) => void }) {
   return (
     <div>
       {field.type === "text" &&
         <FormControl><Input {...props} mask={field.pattern} /></FormControl>}
       {field.type === "select" && (
-        <Select onValueChange={onSelectChange} {...props}>
+        <Select onValueChange={onFormChange} {...props}>
           <FormControl>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Selecione..." />
@@ -31,6 +31,16 @@ export default function FieldInput({ field, onSelectChange, ...props }: { field:
         </Select>
       )}
       {field.type === "textarea" && <FormControl><Textarea {...props} /></FormControl>}
+      {field.type === "file" && (
+        <FormControl>
+          <Input {...props} type="file" value={undefined} onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              onFormChange?.(file);
+            }
+          }} />
+        </FormControl>
+      )}
     </div>
   );
 }

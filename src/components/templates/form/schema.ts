@@ -17,7 +17,7 @@ export interface Group {
 export interface Field {
     id: string;
     name: string;
-    type: 'text' | 'textarea' | 'select';
+    type: 'text' | 'textarea' | 'select' | 'file';
     is_required?: boolean;
     editable?: boolean;
     pattern?: string;

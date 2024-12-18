@@ -5,7 +5,7 @@ import {
     User,
     UserCredential,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase/clientApp";
+import { auth } from "@/lib/firebase/config";
 
 export function onAuthStateChanged(cb: NextOrObserver<User>) {
     return _onAuthStateChanged(auth, cb);

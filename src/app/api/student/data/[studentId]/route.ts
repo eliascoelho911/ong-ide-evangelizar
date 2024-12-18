@@ -1,5 +1,5 @@
 import { requireAuth } from "@/lib/auth/api";
-import { updateStudentData } from "@/lib/firebase/student";
+import { updateStudentData } from "@/lib/firebase/firestore";
 
 export async function PUT(req: Request, { params }: { params: Promise<{ studentId: string }> }) {
     return requireAuth(async () => {

@@ -1,4 +1,4 @@
-import { fetchAllStudents as fetchAllStudentsFromFirebase } from "@/lib/firebase/student";
+import { fetchAllStudents as fetchAllStudentsFromFirebase } from "@/lib/firebase/firestore";
 import { requireAuth } from "@/lib/auth/api";
 
 export async function GET() {

@@ -1,4 +1,4 @@
-import { fetchStudentById } from "@/lib/firebase/student";
+import { fetchStudentById } from "@/lib/firebase/firestore";
 import { requireAuth } from "@/lib/auth/api";
 
 export async function GET(req: Request, { params }: { params: Promise<{ studentId: string }> }) {

@@ -1,6 +1,6 @@
 import 'server-only'
 import { User } from '@/lib/types/user'
-import { db } from '../firebase/firestore'
+import { db } from "../firebase/config";
 import { doc, getDoc } from 'firebase/firestore';
 import { getLoggedUserId } from '../auth/api';
 

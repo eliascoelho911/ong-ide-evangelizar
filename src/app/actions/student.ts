@@ -1,11 +1,11 @@
 'use server';
 
 import { Student } from "@/lib/types/student";
-import { updateStudentData } from "@/data/students";
+import { updateStudentData as updateStudentDataOnFirebase } from "@/data/students";
 
-export async function saveStudent(id: string, data: Student["data"]) {
+export async function updateStudentData(id: string, data: Student["data"]) {
     try {
-        const response = await updateStudentData(id, data)
+        const response = await updateStudentDataOnFirebase(id, data)
 
         if (!response.ok) {
             throw new Error(response.statusText);

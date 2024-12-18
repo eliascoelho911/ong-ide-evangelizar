@@ -255,6 +255,30 @@ export const simpleStudentProfileFormSchema: FormSchema = {
                     ]
                 }
             ]
+        },
+        {
+            name: 'Documentos',
+            id: 'documentos',
+            groups: [
+                {
+                    name: 'Documentos Pessoais',
+                    id: 'personal_documents',
+                    fields: [
+                        {
+                            id: 'personal_documents_rg_front',
+                            name: 'Frente do RG',
+                            type: 'file',
+                            is_required: true,
+                        },
+                        {
+                            id: 'personal_documents_rg_back',
+                            name: 'Verso do RG',
+                            type: 'file',
+                            is_required: true,
+                        }
+                    ]
+                }
+            ]
         }
     ]
 };

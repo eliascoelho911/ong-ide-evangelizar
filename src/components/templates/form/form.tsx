@@ -31,7 +31,7 @@ type TabbedFormProps = {
 type TabbedEditableFormProps = {
   schema: FormSchema;
   values: { [key: string]: string };
-  onValidSubmit?: (values: { [key: string]: string }) => void;
+  onValidSubmit?: (values: { [key: string]: string | File }) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onInvalidSubmit?: (errors: { [key: string]: any }) => void;
 }
@@ -150,7 +150,7 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
                   <FormLabel>{field.name}</FormLabel>
                   <FieldInput
                     field={field}
-                    onSelectChange={formField.onChange}
+                    onFormChange={formField.onChange}
                     {...formField}
                   />
                   <FormMessage />
@@ -176,17 +176,29 @@ function getTabs(schema: FormSchema) {
 function buildZodSchema(fields: Field[]) {
   return z.object(
     fields.reduce((acc, field) => {
-      acc[field.id] = z.string({
-        required_error: field.is_required ? `${field.name} é obrigatório` : undefined,
-      });
-      if (field.pattern) {
-        acc[field.id] = acc[field.id].regex(
-          new RegExp(field.pattern),
-          { message: `${field.name} não é válido` }
+      if (field.type === 'file') {
+        acc[field.id] = z.instanceof(File, {
+          message: `${field.name} é obrigatório`
+        }).refine(
+          (file: File) => {
+            return file.size < 1024 * 1024 * 4
+          },
+          { message: 'O arquivo deve ter no máximo 4MB' }
         );
+      } else {
+        const zodField = z.string({
+          required_error: field.is_required ? `${field.name} é obrigatório` : undefined,
+        });
+        acc[field.id] = zodField
+        if (field.pattern) {
+          acc[field.id] = zodField.regex(
+            new RegExp(field.pattern),
+            { message: `${field.name} não é válido` }
+          );
+        }
       }
       return acc;
-    }, {} as Record<string, z.ZodString>)
+    }, {} as Record<string, z.ZodString | z.ZodType<File>>)
   ).partial().required(
     fields.reduce((acc, field) => {
       if (field.is_required) {
