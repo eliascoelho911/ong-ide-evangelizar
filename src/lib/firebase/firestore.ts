@@ -13,6 +13,17 @@ export async function updateStudentData(studentId: string, studentData: Student[
     await setDoc(docRef, newStudent);
 }
 
+export async function updateStudentDocuments(studentId: string, studentDocuments: Student["documents"]) {
+    const student = (await getDoc(doc(db, 'students', studentId))).data();
+    const newStudent = {
+        ...student,
+        documents: studentDocuments
+    };
+
+    const docRef = doc(db, 'students', studentId);
+    await setDoc(docRef, newStudent);
+}
+
 export async function fetchAllStudents() {
     const querySnapshot = await getDocs(collection(db, 'students'));
     const students = querySnapshot.docs.map(doc => ({

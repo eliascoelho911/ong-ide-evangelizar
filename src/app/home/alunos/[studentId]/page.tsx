@@ -68,8 +68,7 @@ export default async function Page({
                 <StudentForm
                     edit={edit}
                     schema={simpleStudentProfileFormSchema}
-                    values={student.data}
-                    studentId={studentId} />
+                    student={student} />
             </div>
         </ContentWithHeader>
     )

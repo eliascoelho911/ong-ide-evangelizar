@@ -1,31 +1,31 @@
 'use client';
 
-import { updateStudentData } from "@/app/actions/student";
+import { updateStudent } from "@/app/actions/student";
 import { TabbedEditableForm, TabbedForm } from "@/components/templates/form/form";
 import { FormSchema } from "@/components/templates/form/schema";
 import { getStudentRoute } from "@/app/routes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { uploadStudentFile } from "@/lib/firebase/storage";
+import { Student } from "@/lib/types/student";
 
 interface StudentFormProps {
     edit: boolean;
     schema: FormSchema;
-    values: { [key: string]: string };
-    studentId: string;
+    student: Student;
 }
 
 export default function StudentForm({
     edit,
     schema,
-    values,
-    studentId,
+    student,
 }: StudentFormProps) {
     const router = useRouter();
     const [uploadProgress, setUploadProgress] = useState(0);
 
     const onValidSubmit = async (formValues: { [key: string]: string | File }) => {
-        const updatedValues: { [key: string]: string } = {};
+        const data: { [key: string]: string } = {};
+        const documents: { [key: string]: string } = {};
 
         for (const [key, value] of Object.entries(formValues)) {
             if (value instanceof File) {
@@ -33,32 +33,34 @@ export default function StudentForm({
                     const fileExtension = value.name.split('.').pop();
                     const fileName = `${key}.${fileExtension}`
                     const file = new File([value], fileName);
-                    await uploadStudentFile(studentId, file, (progress) => {
+                    await uploadStudentFile(student.id, file, (progress) => {
                         setUploadProgress(progress);
                     });
-                    updatedValues[key] = fileName; 
+                    documents[key] = fileName;
                 } catch (error) {
                     alert(`Erro ao fazer upload do arquivo ${key}: ${error}`);
                     return;
                 }
             } else {
-                updatedValues[key] = value;
+                data[key] = value;
             }
         }
 
-        const response = await updateStudentData(studentId, updatedValues);
+        const response = await updateStudent(student.id, data, documents);
         if (response?.error) {
             alert(response.error);
             return;
         }
 
-        router.push(getStudentRoute(studentId, false));
+        router.push(getStudentRoute(student.id, false));
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onInvalidSubmit = (errors: { [key: string]: any }) => {
         console.debug("Erros no formulário:", errors);
     };
+
+    const values = { ...student.data, ...student.documents };
 
     return (
         <div>

@@ -30,3 +30,8 @@ export async function uploadStudentFile(
     );
   });
 }
+
+export async function getStudentFileUrl(studentId: string, fileName: string): Promise<string> {
+  const storageRef = ref(storage, `students/${studentId}/${fileName}`);
+  return getDownloadURL(storageRef);
+}

@@ -1,14 +1,20 @@
 'use server';
 
 import { Student } from "@/lib/types/student";
-import { updateStudentData as updateStudentDataOnFirebase } from "@/data/students";
+import { updateStudentData as updateStudentDataOnFirebase, updateStudentDocuments as updateStudentDocumentsOnFirebase } from "@/data/students";
 
-export async function updateStudentData(id: string, data: Student["data"]) {
+export async function updateStudent(id: string, data: Student["data"], documents: Student["documents"]) {
     try {
-        const response = await updateStudentDataOnFirebase(id, data)
+        const updateDataResponse = await updateStudentDataOnFirebase(id, data)
 
-        if (!response.ok) {
-            throw new Error(response.statusText);
+        if (!updateDataResponse.ok) {
+            throw new Error(updateDataResponse.statusText);
+        }
+
+        const updateDocumentsResponse = await updateStudentDocumentsOnFirebase(id, documents)
+
+        if (!updateDocumentsResponse.ok) {
+            throw new Error(updateDocumentsResponse.statusText);
         }
     } catch (error) {
         console.debug('Failed to save student:', error);

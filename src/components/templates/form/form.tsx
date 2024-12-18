@@ -10,6 +10,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Download } from "lucide-react";
 
 type Tab = {
   id: string;
@@ -85,9 +86,11 @@ export function TabbedForm({ schema, values }: TabbedFormProps) {
             <p className="text-sm font-medium leading-none">
               {field.name}
             </p>
-            <p className="text-sm text-muted-foreground">
-              {values[field.id]}
-            </p>
+            {field.type == 'file' &&
+              <a href={values[field.id]} download><Button><Download /> {`Baixar ${field.name}`}</Button></a> ||
+              <p className="text-sm text-muted-foreground">
+                {values[field.id]}
+              </p>}
           </div>
         )}
       </TabbedFormContent>
