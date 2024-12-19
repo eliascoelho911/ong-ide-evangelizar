@@ -33,37 +33,28 @@ export default function StudentForm({
     const [uploadProgress, setUploadProgress] = useState(0);
 
     const onValidSubmit = async (formValues: { [key: string]: string | File | null }) => {
-        console.log("formValues", formValues);
-        
-        const data: { [key: string]: string } = {};
-        const removedDocuments: string[] = [];
+        try {
+            const data: { [key: string]: string } = {};
+            const removedDocuments: string[] = [];
 
-        for (const [key, value] of Object.entries(formValues)) {
-            if (value instanceof File) {
-                try {
+            for (const [key, value] of Object.entries(formValues)) {
+                if (value instanceof File) {
                     await updateStudentDocument(studentId, { id: key, file: value }, setUploadProgress);
-                } catch (error) {
-                    alert(`Erro ao fazer upload do arquivo ${key}: ${error}`);
-                    return;
+                } else if (value === null) {
+                    removedDocuments.push(key);
+                } else {
+                    data[key] = value;
                 }
-            } else if (value === null) {
-                removedDocuments.push(key);
-            } else {
-                data[key] = value;
             }
-        }
 
-        console.log("studentDocuments", studentDocuments);
-        console.log("removedDocuments", removedDocuments);
+            for (const key of removedDocuments) {
+                const path = studentDocuments[key].path;
+                await deleteStudentDocument(studentId, { id: key, path: path });
+            }
 
-        for (const key of removedDocuments) {
-            const path = studentDocuments[key].path;
-            await deleteStudentDocument(studentId, { id: key, path: path });
-        }
-
-        const response = await updateStudentData(studentId, data);
-        if (response?.error) {
-            alert(response.error);
+            await updateStudentData(studentId, data);
+        } catch (error) {
+            alert("Ocorreu um erro ao salvar os dados.");
             return;
         }
 

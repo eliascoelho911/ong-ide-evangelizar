@@ -199,7 +199,9 @@ function buildZodSchema(fields: Field[]) {
             { message: `${field.name} não é válido` }
           );
         }
-        acc[field.id] = zodField;
+        acc[field.id] = zodField.refine((value: string) => {
+          return !field.is_required || value.trim().length > 0;
+        }, { message: `${field.name} é obrigatório` });
       }
       return acc;
     }, {} as Record<string, z.ZodTypeAny>)
