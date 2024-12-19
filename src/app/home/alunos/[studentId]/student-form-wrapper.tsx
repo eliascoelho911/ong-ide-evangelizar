@@ -1,13 +1,13 @@
 'use client';
 
-import { updateStudent } from "@/app/actions/student";
+import { updateStudentData } from "@/app/actions/student";
 import { TabbedEditableForm, TabbedForm } from "@/components/templates/form/form";
 import { FormSchema } from "@/components/templates/form/schema";
 import { getStudentRoute } from "@/app/routes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { removeStudentFile, uploadStudentFile } from "@/lib/firebase/storage";
 import { Student } from "@/lib/types/student";
+import { deleteStudentDocument, updateStudentDocument } from "@/data/students";
 
 interface StudentFormProps {
     edit: boolean;
@@ -36,19 +36,12 @@ export default function StudentForm({
         console.log("formValues", formValues);
         
         const data: { [key: string]: string } = {};
-        const documents: { [key: string]: string } = {};
         const removedDocuments: string[] = [];
 
         for (const [key, value] of Object.entries(formValues)) {
             if (value instanceof File) {
                 try {
-                    const fileExtension = value.name.split('.').pop();
-                    const fileName = `${key}.${fileExtension}`
-                    const file = new File([value], fileName);
-                    await uploadStudentFile(studentId, file, (progress) => {
-                        setUploadProgress(progress);
-                    });
-                    documents[key] = fileName;
+                    await updateStudentDocument(studentId, { id: key, file: value }, setUploadProgress);
                 } catch (error) {
                     alert(`Erro ao fazer upload do arquivo ${key}: ${error}`);
                     return;
@@ -61,15 +54,14 @@ export default function StudentForm({
         }
 
         console.log("studentDocuments", studentDocuments);
-        console.log("documents", documents);
         console.log("removedDocuments", removedDocuments);
 
         for (const key of removedDocuments) {
             const path = studentDocuments[key].path;
-            await removeStudentFile(studentId, path);
+            await deleteStudentDocument(studentId, { id: key, path: path });
         }
 
-        const response = await updateStudent(studentId, data, documents);
+        const response = await updateStudentData(studentId, data);
         if (response?.error) {
             alert(response.error);
             return;

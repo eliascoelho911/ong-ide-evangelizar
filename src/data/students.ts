@@ -1,44 +1,38 @@
-import { fetchWithAuth } from "@/lib/auth/fetch";
+import { uploadStudentFile as _uploadStudentFile, deleteStudentFile as _deteleStudentFile } from "@/lib/firebase/storage";
+import {
+    updateStudentDocument as _updateStudentDocument,
+    updateStudentData as _updateStudentData,
+    fetchStudentById as _fetchStudentById,
+    fetchAllStudents as _fetchAllStudents
+} from "@/lib/firebase/firestore";
 import { Student } from "@/lib/types/student";
 
 export async function updateStudentData(id: string, data: Student["data"]) {
-    return await fetchWithAuth(`api/student/data/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
+    await _updateStudentData(id, data);
 }
 
-export async function updateStudentDocuments(id: string, documents: Student["documents"]) {
-    return await fetchWithAuth(`api/student/documents/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(documents),
-    });
+export async function updateStudentDocument(
+    studentId: string,
+    document: { id: string, file: File },
+    onProgress: (progress: number) => void
+) {
+    const fileExtension = document.file.name.split('.').pop();
+    const fileName = `${document.id}.${fileExtension}`
+    const file = new File([document.file], fileName);
+
+    await _uploadStudentFile(studentId, file, onProgress);
+    await _updateStudentDocument(studentId, { id: document.id, path: fileName });
+}
+
+export async function deleteStudentDocument(studentId: string, document: { id: string, path: string }) {
+    await _deteleStudentFile(studentId, document.path);
+    await _updateStudentDocument(studentId, { id: document.id, path: null });
 }
 
 export async function fetchAllStudents(): Promise<Student[]> {
-    try {
-        const result = await fetchWithAuth('api/students', {
-            method: 'GET'
-        });
-        return Promise.resolve(await result.json() as Student[])
-    } catch (error) {
-        return Promise.reject(error);
-    }
+    return await _fetchAllStudents();
 }
 
 export async function fetchStudentById(id: string): Promise<Student> {
-    try {
-        const result = await fetchWithAuth(`api/student/${id}`, {
-            method: 'GET'
-        });
-        return Promise.resolve(await result.json() as Student);
-    } catch (error) {
-        return Promise.reject(error);
-    }
+    return await _fetchStudentById(id);
 }

@@ -1,4 +1,4 @@
-import { getDoc, doc, setDoc, getDocs, collection } from "firebase/firestore";
+import { getDoc, doc, setDoc, getDocs, collection, updateDoc, deleteField } from "firebase/firestore";
 import { Student } from "../types/student";
 import { db } from "./config";
 
@@ -13,17 +13,11 @@ export async function updateStudentData(studentId: string, studentData: Student[
     await setDoc(docRef, newStudent);
 }
 
-export async function updateStudentDocuments(studentId: string, studentDocuments: { [key: string]: string }) {
-    const student = (await getDoc(doc(db, 'students', studentId))).data();
-    const newStudent = {
-        ...student,
-        documents: {
-            ...studentDocuments
-        }
-    };
-
+export async function updateStudentDocument(studentId: string, document: { id: string, path: string | null }) {
     const docRef = doc(db, 'students', studentId);
-    await setDoc(docRef, newStudent);
+    await updateDoc(docRef, {
+        [`documents.${document.id}`]: document.path === null ? deleteField() : document.path
+    });
 }
 
 export async function fetchAllStudents() {
@@ -32,7 +26,7 @@ export async function fetchAllStudents() {
         id: doc.id,
         ...doc.data()
     }));
-    return students;
+    return students as Student[];
 }
 
 export async function fetchStudentById(studentId: string) {
@@ -40,6 +34,6 @@ export async function fetchStudentById(studentId: string) {
     return {
         id: docSnap.id,
         ...docSnap.data()
-    };
+    } as Student;
 }
 

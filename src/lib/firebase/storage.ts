@@ -1,18 +1,6 @@
 import { ref, uploadBytesResumable, getDownloadURL, getMetadata, deleteObject } from "firebase/storage";
 import { storage } from "./config";
 
-async function fileExists(storageRef: any): Promise<boolean> {
-  try {
-    await getDownloadURL(storageRef);
-    return true;
-  } catch (error: any) {
-    if (error.code === "storage/object-not-found") {
-      return false;
-    }
-    throw error; 
-  }
-}
-
 export async function uploadStudentFile(
   studentId: string,
   file: File,
@@ -44,7 +32,7 @@ export async function uploadStudentFile(
   });
 }
 
-export async function removeStudentFile(studentId: string, fileName: string): Promise<void> {
+export async function deleteStudentFile(studentId: string, fileName: string): Promise<void> {
   console.log(`Removendo arquivo ${fileName} para o estudante ${studentId}.`);
   const storageRef = ref(storage, `students/${studentId}/${fileName}`);
 
