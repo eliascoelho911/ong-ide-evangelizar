@@ -15,7 +15,7 @@ import { FormControl } from "@/components/ui/form";
 import { Delete, Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export default function FieldInput({ field, fileUrl, onFormChange, ...props }: { field: Field, fileUrl: string, onFormChange?: (value: string | File | undefined) => void }) {
+export default function FieldInput({ field, fileUrl, onFormChange, ...props }: { field: Field, fileUrl: string, onFormChange?: (value: string | File | null) => void }) {
   const [showInputFile, setShowInputFile] = React.useState(fileUrl == undefined);
 
   return (
@@ -60,7 +60,7 @@ export default function FieldInput({ field, fileUrl, onFormChange, ...props }: {
                   </Button>
                 </a>
                 <Button variant="destructive" onClick={() => {
-                  onFormChange?.(undefined)
+                  onFormChange?.(null)
                   setShowInputFile(true)
                 }}>
                   <X /> {`Apagar`}

@@ -20,18 +20,6 @@ export async function uploadStudentFile(
 ): Promise<string> {
   const storageRef = ref(storage, `students/${studentId}/${file.name}`);
 
-  const exists = await fileExists(storageRef);
-
-  if (exists) {
-    const existingFileMetadata = await getMetadata(storageRef);
-
-    if (existingFileMetadata.size === file.size) {
-      const existingFileURL = await getDownloadURL(storageRef);
-      console.log("Arquivo já existe e é idêntico. Retornando URL.");
-      return existingFileURL;
-    }
-  }
-
   return new Promise((resolve, reject) => {
     const uploadTask = uploadBytesResumable(storageRef, file);
 

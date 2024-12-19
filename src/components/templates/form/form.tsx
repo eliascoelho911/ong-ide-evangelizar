@@ -188,7 +188,7 @@ function buildZodSchema(fields: Field[]) {
             return file.size < 1024 * 1024 * 4
           },
           { message: 'O arquivo deve ter no máximo 4MB' }
-        ).optional().catch(undefined);
+        ).nullish().catch(undefined);
       } else {
         let zodField = z.string({
           required_error: field.is_required ? `${field.name} é obrigatório` : undefined,

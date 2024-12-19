@@ -12,20 +12,32 @@ import { Student } from "@/lib/types/student";
 interface StudentFormProps {
     edit: boolean;
     schema: FormSchema;
-    student: Student;
+    studentId: string,
+    studentData: Student["data"];
+    studentDocuments: {
+        [key: string]: {
+            path: string;
+            url: string;
+        }
+    }
 }
 
 export default function StudentForm({
     edit,
     schema,
-    student,
+    studentId,
+    studentData,
+    studentDocuments
 }: StudentFormProps) {
     const router = useRouter();
     const [uploadProgress, setUploadProgress] = useState(0);
 
-    const onValidSubmit = async (formValues: { [key: string]: string | File }) => {
+    const onValidSubmit = async (formValues: { [key: string]: string | File | null }) => {
+        console.log("formValues", formValues);
+        
         const data: { [key: string]: string } = {};
         const documents: { [key: string]: string } = {};
+        const removedDocuments: string[] = [];
 
         for (const [key, value] of Object.entries(formValues)) {
             if (value instanceof File) {
@@ -33,7 +45,7 @@ export default function StudentForm({
                     const fileExtension = value.name.split('.').pop();
                     const fileName = `${key}.${fileExtension}`
                     const file = new File([value], fileName);
-                    await uploadStudentFile(student.id, file, (progress) => {
+                    await uploadStudentFile(studentId, file, (progress) => {
                         setUploadProgress(progress);
                     });
                     documents[key] = fileName;
@@ -41,31 +53,29 @@ export default function StudentForm({
                     alert(`Erro ao fazer upload do arquivo ${key}: ${error}`);
                     return;
                 }
+            } else if (value === null) {
+                removedDocuments.push(key);
             } else {
                 data[key] = value;
             }
         }
 
-        for (const [key, value] of Object.entries(student.documents)) {
-            console.log(key);
-            if (!(key in documents)) {
-                console.log("removing", key);
-                try {
-                    await removeStudentFile(student.id, value.path);
-                } catch (error) {
-                    alert(`Erro ao remover arquivo ${key}: ${error}`);
-                    return;
-                }
-            }
+        console.log("studentDocuments", studentDocuments);
+        console.log("documents", documents);
+        console.log("removedDocuments", removedDocuments);
+
+        for (const key of removedDocuments) {
+            const path = studentDocuments[key].path;
+            await removeStudentFile(studentId, path);
         }
 
-        const response = await updateStudent(student.id, data, documents);
+        const response = await updateStudent(studentId, data, documents);
         if (response?.error) {
             alert(response.error);
             return;
         }
 
-        router.push(getStudentRoute(student.id, false));
+        router.push(getStudentRoute(studentId, false));
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,7 +83,14 @@ export default function StudentForm({
         console.debug("Erros no formulário:", errors);
     };
 
-    const values = { ...student.data, ...Object.fromEntries(Object.entries(student.documents).map(([key, value]) => [key, value.url])) };
+    const values = {
+        ...studentData,
+        ...Object.fromEntries(
+            Object.entries(studentDocuments).map(([key, value]) => {
+                return [key, value.url];
+            })
+        )
+    };
 
     return (
         <div>

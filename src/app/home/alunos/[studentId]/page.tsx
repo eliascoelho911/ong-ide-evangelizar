@@ -8,6 +8,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { getStudentRoute, getStudentsRoute } from "@/app/routes"
+import { getStudentFileUrl } from "@/lib/firebase/storage"
 
 export default async function Page({
     params,
@@ -26,6 +27,13 @@ export default async function Page({
     const fullName = getFullName(student)!
     const birthday = getBirthday(student)
     const guardians = getGuardians(student)
+    const studentDocumentsWithUrl = Object.fromEntries(
+        await Promise.all(
+            Object.entries(student.documents).map(async ([key, path]) => {
+                return [key, { path: path, url: await getStudentFileUrl(studentId, path) }]
+            })
+        )
+    )
 
     const edit = (await searchParams).edit === "true"
 
@@ -68,7 +76,9 @@ export default async function Page({
                 <StudentForm
                     edit={edit}
                     schema={simpleStudentProfileFormSchema}
-                    student={student} />
+                    studentId={student.id}
+                    studentData={student.data}
+                    studentDocuments={studentDocumentsWithUrl} />
             </div>
         </ContentWithHeader>
     )
