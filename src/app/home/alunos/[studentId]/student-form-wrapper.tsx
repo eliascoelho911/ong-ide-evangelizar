@@ -1,13 +1,12 @@
 'use client';
 
-import { updateStudentData } from "@/app/actions/student";
+import { updateStudent } from "@/app/actions/student";
 import { TabbedEditableForm, TabbedForm } from "@/components/templates/form/form";
 import { FormSchema } from "@/components/templates/form/schema";
-import { getStudentRoute } from "@/app/routes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Student } from "@/lib/types/student";
-import { deleteStudentDocument, updateStudentDocument } from "@/data/students";
+import { getStudentRoute } from "@/app/routes";
 
 interface StudentFormProps {
     edit: boolean;
@@ -33,37 +32,17 @@ export default function StudentForm({
     const [uploadProgress, setUploadProgress] = useState(0);
 
     const onValidSubmit = async (formValues: { [key: string]: string | File | null }) => {
-        try {
-            const data: { [key: string]: string } = {};
-            const removedDocuments: string[] = [];
-
-            for (const [key, value] of Object.entries(formValues)) {
-                if (value instanceof File) {
-                    await updateStudentDocument(studentId, { id: key, file: value }, setUploadProgress);
-                } else if (value === null) {
-                    removedDocuments.push(key);
-                } else {
-                    data[key] = value;
-                }
-            }
-
-            for (const key of removedDocuments) {
-                const path = studentDocuments[key].path;
-                await deleteStudentDocument(studentId, { id: key, path: path });
-            }
-
-            await updateStudentData(studentId, data);
-        } catch (error) {
-            alert("Ocorreu um erro ao salvar os dados.");
-            return;
+        const result = await updateStudent(studentId, formValues, studentDocuments, setUploadProgress);
+        if (result?.error) {
+            alert(result.error);
+        } else {
+            router.push(getStudentRoute(studentId, false));
         }
-
-        router.push(getStudentRoute(studentId, false));
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onInvalidSubmit = (errors: { [key: string]: any }) => {
-        console.debug("Erros no formulário:", errors);
+        alert("Por favor, preencha todos os campos obrigatórios.");
     };
 
     const values = {
