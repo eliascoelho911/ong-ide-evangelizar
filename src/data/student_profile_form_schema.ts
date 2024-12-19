@@ -268,13 +268,13 @@ export const simpleStudentProfileFormSchema: FormSchema = {
                             id: 'personal_documents_rg_front',
                             name: 'Frente do RG',
                             type: 'file',
-                            is_required: true,
+                            is_required: false,
                         },
                         {
                             id: 'personal_documents_rg_back',
                             name: 'Verso do RG',
                             type: 'file',
-                            is_required: true,
+                            is_required: false,
                         }
                     ]
                 }

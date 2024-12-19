@@ -2,7 +2,12 @@ export type Student = {
     id: string;
     avatar?: string;
     data: { [key: string]: string };
-    documents: { [key: string]: string };
+    documents: {
+        [key: string]: {
+            path: string;
+            url: string;
+        }
+    };
 };
 
 export function getFullName(student: Student): string | undefined {

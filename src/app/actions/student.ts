@@ -3,7 +3,7 @@
 import { Student } from "@/lib/types/student";
 import { updateStudentData as updateStudentDataOnFirebase, updateStudentDocuments as updateStudentDocumentsOnFirebase } from "@/data/students";
 
-export async function updateStudent(id: string, data: Student["data"], documents: Student["documents"]) {
+export async function updateStudent(id: string, data: Student["data"], documents: { [key: string]: string }) {
     try {
         const updateDataResponse = await updateStudentDataOnFirebase(id, data)
 

@@ -12,7 +12,7 @@ export async function updateStudentData(id: string, data: Student["data"]) {
     });
 }
 
-export async function updateStudentDocuments(id: string, documents: Student["documents"]) {
+export async function updateStudentDocuments(id: string, documents: { [key: string]: string }) {
     return await fetchWithAuth(`api/student/documents/${id}`, {
         method: 'PUT',
         headers: {
@@ -38,10 +38,10 @@ export async function fetchStudentById(id: string): Promise<Student> {
         const result = await fetchWithAuth(`api/student/${id}`, {
             method: 'GET'
         });
-        const student = await result.json() as Student;
+        const student = await result.json();
         const documentsEntries = await Promise.all(
             Object.entries(student.documents).map(async ([key, value]) => {
-                return [key, await getStudentFileUrl(student.id, value)];
+                return [key, { path: value, url: await getStudentFileUrl(id, value as string) }];
             })
         );
         student.documents = Object.fromEntries(documentsEntries);

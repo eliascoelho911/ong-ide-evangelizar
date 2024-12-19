@@ -6,7 +6,7 @@ import { FormSchema } from "@/components/templates/form/schema";
 import { getStudentRoute } from "@/app/routes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { uploadStudentFile } from "@/lib/firebase/storage";
+import { removeStudentFile, uploadStudentFile } from "@/lib/firebase/storage";
 import { Student } from "@/lib/types/student";
 
 interface StudentFormProps {
@@ -46,6 +46,19 @@ export default function StudentForm({
             }
         }
 
+        for (const [key, value] of Object.entries(student.documents)) {
+            console.log(key);
+            if (!(key in documents)) {
+                console.log("removing", key);
+                try {
+                    await removeStudentFile(student.id, value.path);
+                } catch (error) {
+                    alert(`Erro ao remover arquivo ${key}: ${error}`);
+                    return;
+                }
+            }
+        }
+
         const response = await updateStudent(student.id, data, documents);
         if (response?.error) {
             alert(response.error);
@@ -60,7 +73,7 @@ export default function StudentForm({
         console.debug("Erros no formulário:", errors);
     };
 
-    const values = { ...student.data, ...student.documents };
+    const values = { ...student.data, ...Object.fromEntries(Object.entries(student.documents).map(([key, value]) => [key, value.url])) };
 
     return (
         <div>

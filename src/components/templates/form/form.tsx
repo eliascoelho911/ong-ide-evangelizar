@@ -153,6 +153,7 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
                   <FormLabel>{field.name}</FormLabel>
                   <FieldInput
                     field={field}
+                    fileUrl={values[field.id]}
                     onFormChange={formField.onChange}
                     {...formField}
                   />
@@ -187,21 +188,21 @@ function buildZodSchema(fields: Field[]) {
             return file.size < 1024 * 1024 * 4
           },
           { message: 'O arquivo deve ter no máximo 4MB' }
-        );
+        ).optional().catch(undefined);
       } else {
-        const zodField = z.string({
+        let zodField = z.string({
           required_error: field.is_required ? `${field.name} é obrigatório` : undefined,
         });
-        acc[field.id] = zodField
         if (field.pattern) {
-          acc[field.id] = zodField.regex(
+          zodField = zodField.regex(
             new RegExp(field.pattern),
             { message: `${field.name} não é válido` }
           );
         }
+        acc[field.id] = zodField;
       }
       return acc;
-    }, {} as Record<string, z.ZodString | z.ZodType<File>>)
+    }, {} as Record<string, z.ZodTypeAny>)
   ).partial().required(
     fields.reduce((acc, field) => {
       if (field.is_required) {

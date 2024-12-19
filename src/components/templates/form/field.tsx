@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from "react";
 import { Input } from "@/components/ui/input"; // Adjust the import path based on your project structure
 import {
@@ -10,8 +12,12 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Field } from "./schema";
 import { FormControl } from "@/components/ui/form";
+import { Delete, Download, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export default function FieldInput({ field, onFormChange, ...props }: { field: Field, onFormChange?: (value: string | File) => void }) {
+export default function FieldInput({ field, fileUrl, onFormChange, ...props }: { field: Field, fileUrl: string, onFormChange?: (value: string | File | undefined) => void }) {
+  const [showInputFile, setShowInputFile] = React.useState(fileUrl == undefined);
+
   return (
     <div>
       {field.type === "text" &&
@@ -33,12 +39,35 @@ export default function FieldInput({ field, onFormChange, ...props }: { field: F
       {field.type === "textarea" && <FormControl><Textarea {...props} /></FormControl>}
       {field.type === "file" && (
         <FormControl>
-          <Input {...props} type="file" value={undefined} onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              onFormChange?.(file);
-            }
-          }} />
+          <div className="flex items-center gap-2">
+            {showInputFile && (
+              <Input
+                {...props}
+                type="file"
+                value={undefined}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    onFormChange?.(file);
+                  }
+                }}
+              />)}
+            {fileUrl && !showInputFile && (
+              <div className="flex items-center gap-2">
+                <a href={fileUrl} download>
+                  <Button variant="secondary">
+                    <Download /> {`Baixar`}
+                  </Button>
+                </a>
+                <Button variant="destructive" onClick={() => {
+                  onFormChange?.(undefined)
+                  setShowInputFile(true)
+                }}>
+                  <X /> {`Apagar`}
+                </Button>
+              </div>
+            )}
+          </div>
         </FormControl>
       )}
     </div>
