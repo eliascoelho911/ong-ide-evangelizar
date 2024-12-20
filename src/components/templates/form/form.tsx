@@ -21,6 +21,7 @@ type Tab = {
 type TabbedFormContentProps = {
   tabs: Tab[];
   tabsWithErrors?: Set<string>;
+  tabValidation?: (tab: Tab) => string | undefined;
   children: (field: Field) => React.ReactNode;
 };
 
@@ -37,9 +38,8 @@ type TabbedEditableFormProps = {
   onInvalidSubmit?: (errors: { [key: string]: any }) => void;
 }
 
-export function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), children }: TabbedFormContentProps) {
+export function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), tabValidation, children }: TabbedFormContentProps) {
   const selectedTab = tabs[0].id;
-
   return (<Tabs defaultValue={selectedTab} className="w-full">
     <div className="flex justify-center">
       <TabsList>
@@ -55,7 +55,7 @@ export function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), ch
     </div>
     {tabs.map(tab => (
       <TabsContent key={tab.id} value={tab.id}>
-        <div className={`grid grid-cols-1 ${tab.groups.length > 1 ? 'sm:grid-cols-2' : ''} gap-4`}>
+        {tabValidation?.(tab) === undefined && <div className={`grid grid-cols-1 ${tab.groups.length > 1 ? 'sm:grid-cols-2' : ''} gap-4`}>
           {tab.groups.map((group) => (
             <Card key={group.id} className="mt-8">
               <CardHeader>
@@ -70,26 +70,39 @@ export function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), ch
               </CardContent>
             </Card>
           ))}
-        </div>
+        </div> ||
+          <div className="flex items-center justify-center h-48">
+            <h1 className="text-lg text-muted-foreground">{tabValidation?.(tab)}</h1>
+          </div>
+        }
       </TabsContent>
     ))}
   </Tabs>)
 }
 
 export function TabbedForm({ schema, values }: TabbedFormProps) {
-  const tabs = getTabs(schema);
+  const tabs = getTabs(schema, values);
   return (
     <div className="flex w-fit">
-      <TabbedFormContent tabs={tabs}>
+      <TabbedFormContent tabs={tabs} tabValidation={(tab) => {
+        const hasOnlyEmptyFields = tab.groups.every(group => group.fields.every(field => !values[field.id]));
+        if (hasOnlyEmptyFields) {
+          if (tab.label === 'Documentos') {
+            return 'Esse aluno não possui documentos cadastrados';
+          } else {
+            return `Esse aluno não possui ${tab.label.toLowerCase()} cadastrados`;
+          }
+        }
+      }}>
         {(field) => (
           <div key={field.id} className="flex flex-col gap-y-2">
             <p className="text-sm font-medium leading-none">
               {field.name}
             </p>
-            {field.type == 'file' &&
+            {field.type == 'file' && values[field.id] &&
               <a href={values[field.id]} download><Button><Download /> {`Baixar ${field.name}`}</Button></a> ||
               <p className="text-sm text-muted-foreground">
-                {values[field.id]}
+                {values[field.id] || 'Sem informação'}
               </p>}
           </div>
         )}
@@ -169,12 +182,12 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
   );
 }
 
-function getTabs(schema: FormSchema) {
+function getTabs(schema: FormSchema, values?: { [key: string]: string }): Tab[] {
   return schema.sessions.map(session => ({
     id: session.id,
     label: session.name,
     groups: session.groups
-  } as Tab));
+  } as Tab))
 }
 
 function buildZodSchema(fields: Field[]) {
