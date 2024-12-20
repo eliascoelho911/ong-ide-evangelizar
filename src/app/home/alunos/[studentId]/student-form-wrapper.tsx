@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Student } from "@/lib/types/student";
 import { getStudentRoute } from "@/app/routes";
+import { Progress } from "@/components/ui/progress";
 
 interface StudentFormProps {
     edit: boolean;
@@ -56,12 +57,6 @@ export default function StudentForm({
 
     return (
         <div>
-            {uploadProgress > 0 && (
-                <div>
-                    <p>Progresso do Upload: {uploadProgress}%</p>
-                    <progress value={uploadProgress} max="100" />
-                </div>
-            )}
             {edit ? (
                 <TabbedEditableForm
                     schema={schema}

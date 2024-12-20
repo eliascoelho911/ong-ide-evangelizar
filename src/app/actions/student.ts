@@ -20,13 +20,17 @@ export async function updateStudent(
     try {
         const data: { [key: string]: string } = {};
         const removedDocuments: string[] = [];
+        const files = Object.values(formValues).filter(value => value instanceof File).length;
 
         for (const [key, value] of Object.entries(formValues)) {
             if (value instanceof File) {
-                await updateStudentDocument(studentId, { id: key, file: value }, setUploadProgress);
+                await updateStudentDocument(studentId, { id: key, file: value }, (progress) => {
+                    const relativeProgress = Math.round((progress / files) * 100);
+                    setUploadProgress(relativeProgress);
+                });
             } else if (value === null) {
                 removedDocuments.push(key);
-            } else {
+            } else if (value) {
                 data[key] = value;
             }
         }

@@ -10,7 +10,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 
 type Tab = {
   id: string;
@@ -38,7 +38,7 @@ type TabbedEditableFormProps = {
   onInvalidSubmit?: (errors: { [key: string]: any }) => void;
 }
 
-export function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), tabValidation, children }: TabbedFormContentProps) {
+function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), tabValidation, children }: TabbedFormContentProps) {
   const selectedTab = tabs[0].id;
   return (<Tabs defaultValue={selectedTab} className="w-full">
     <div className="flex justify-center">
@@ -81,7 +81,7 @@ export function TabbedFormContent({ tabs, tabsWithErrors = new Set<string>(), ta
 }
 
 export function TabbedForm({ schema, values }: TabbedFormProps) {
-  const tabs = getTabs(schema, values);
+  const tabs = getTabs(schema);
   return (
     <div className="flex w-fit">
       <TabbedFormContent tabs={tabs} tabValidation={(tab) => {
@@ -152,6 +152,10 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
     }
   }
 
+  const formIsLoading = () => (
+    form.formState.isSubmitted || form.formState.isSubmitting || form.formState.isLoading
+  )
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onValid, onInvalid)} className="space-y-8">
@@ -176,13 +180,15 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
             />
           )}
         </TabbedFormContent>
-        <Button type="submit" className="btn">Salvar</Button>
+        <Button type="submit" className="btn" disabled={formIsLoading()}>
+            {formIsLoading() ? (<><Loader2 className="animate-spin" /> Salvando...</>) : "Salvar"}
+          </Button>
       </form>
     </Form>
   );
 }
 
-function getTabs(schema: FormSchema, values?: { [key: string]: string }): Tab[] {
+function getTabs(schema: FormSchema): Tab[] {
   return schema.sessions.map(session => ({
     id: session.id,
     label: session.name,
