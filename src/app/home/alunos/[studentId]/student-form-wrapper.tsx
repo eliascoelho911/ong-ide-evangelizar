@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Student } from "@/lib/types/student";
 import { getStudentRoute } from "@/app/routes";
-import { Progress } from "@/components/ui/progress";
 
 interface StudentFormProps {
     edit: boolean;

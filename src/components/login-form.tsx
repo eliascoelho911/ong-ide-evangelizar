@@ -6,7 +6,6 @@ import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Form,
   FormControl,
@@ -17,6 +16,9 @@ import {
 } from "@/components/ui/form"
 import { signIn } from "@/app/actions/sign-in"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { getStudentsRoute } from "@/app/routes"
+import formIsLoading from "@/utils/form-is-loading"
 
 const FormSchema = z.object({
   email: z.string().email({ message: "Informe um e-mail válido." }),
@@ -29,6 +31,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
+  const router = useRouter()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -37,8 +40,14 @@ export function LoginForm({
     },
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    signIn(data)
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const result = await signIn(data)
+
+    if (result?.error) {
+      form.setError("email", { message: result.error })
+    } else {
+      router.push(getStudentsRoute())
+    }
   }
 
   return (
@@ -83,7 +92,7 @@ export function LoginForm({
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={formIsLoading(form.formState)}>
             Entrar
           </Button>
         </div>

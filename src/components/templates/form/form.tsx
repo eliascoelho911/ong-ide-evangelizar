@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, Loader2 } from "lucide-react";
+import formIsLoading from "@/utils/form-is-loading";
 
 type Tab = {
   id: string;
@@ -152,10 +153,6 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
     }
   }
 
-  const formIsLoading = () => (
-    form.formState.isSubmitted || form.formState.isSubmitting || form.formState.isLoading
-  )
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onValid, onInvalid)} className="space-y-8">
@@ -180,8 +177,8 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
             />
           )}
         </TabbedFormContent>
-        <Button type="submit" className="btn" disabled={formIsLoading()}>
-            {formIsLoading() ? (<><Loader2 className="animate-spin" /> Salvando...</>) : "Salvar"}
+        <Button type="submit" className="btn" disabled={formIsLoading(form.formState)}>
+            {formIsLoading(form.formState) ? (<><Loader2 className="animate-spin" /> Salvando...</>) : "Salvar"}
           </Button>
       </form>
     </Form>
