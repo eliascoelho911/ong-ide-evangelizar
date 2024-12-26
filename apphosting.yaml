@@ -28,7 +28,7 @@ env:
 
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     secret: firebaseAppId
-    
+
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
     value: ong-ide-evangelizar-web.firebasestorage.app
     availability:
@@ -36,4 +36,4 @@ env:
       - RUNTIME
 
   - variable: SESSION_SECRET
-    secret: myApiSessionSecret
+    secret: sessionSecret
