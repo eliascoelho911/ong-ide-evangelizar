@@ -7,7 +7,7 @@ export function getStudentsRoute(): string {
 }
 
 export function getAddStudentRoute(): string {
-    return `${getStudentsRoute()}/adicionar`;
+    return `${getStudentsRoute()}/cadastrar`;
 }
 
 export function getStudentRoute(studentId: string, edit: boolean = false): string {

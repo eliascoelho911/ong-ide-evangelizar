@@ -31,6 +31,9 @@ export async function fetchAllStudents() {
 
 export async function fetchStudentById(studentId: string) {
     const docSnap = await getDoc(doc(db, 'students', studentId));
+    if (!docSnap.exists()) {
+        return undefined;
+    }
     return {
         id: docSnap.id,
         ...docSnap.data()

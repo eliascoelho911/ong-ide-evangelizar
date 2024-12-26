@@ -33,6 +33,6 @@ export async function fetchAllStudents(): Promise<Student[]> {
     return await _fetchAllStudents();
 }
 
-export async function fetchStudentById(id: string): Promise<Student> {
+export async function fetchStudentById(id: string): Promise<Student | undefined> {
     return await _fetchStudentById(id);
 }

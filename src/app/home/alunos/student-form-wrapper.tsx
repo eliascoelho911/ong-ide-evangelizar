@@ -12,13 +12,13 @@ interface StudentFormProps {
     edit: boolean;
     schema: FormSchema;
     studentId: string,
-    studentData: Student["data"];
+    studentData: Student["data"] | undefined;
     studentDocuments: {
         [key: string]: {
             path: string;
             url: string;
         }
-    }
+    } | undefined
 }
 
 export default function StudentForm({
@@ -48,7 +48,7 @@ export default function StudentForm({
     const values = {
         ...studentData,
         ...Object.fromEntries(
-            Object.entries(studentDocuments).map(([key, value]) => {
+            Object.entries(studentDocuments ?? {}).map(([key, value]) => {
                 return [key, value.url];
             })
         )

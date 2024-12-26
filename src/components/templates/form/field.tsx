@@ -12,7 +12,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Field } from "./schema";
 import { FormControl } from "@/components/ui/form";
-import { Delete, Download, X } from "lucide-react";
+import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function FieldInput({ field, fileUrl, onFormChange, ...props }: { field: Field, fileUrl: string, onFormChange?: (value: string | File | null) => void }) {

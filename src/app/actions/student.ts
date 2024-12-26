@@ -14,7 +14,7 @@ export async function updateStudent(
             path: string;
             url: string;
         }
-    },
+    } | undefined,
     setUploadProgress: (progress: number) => void
 ) {
     try {
@@ -35,9 +35,11 @@ export async function updateStudent(
             }
         }
 
-        for (const key of removedDocuments) {
-            const path = studentDocuments[key].path;
-            await deleteStudentDocument(studentId, { id: key, path: path });
+        if (studentDocuments) {
+            for (const key of removedDocuments) {
+                const path = studentDocuments[key].path;
+                await deleteStudentDocument(studentId, { id: key, path: path });
+            }
         }
 
         await updateStudentData(studentId, data);
