@@ -33,5 +33,11 @@ env:
       - BUILD
       - RUNTIME
 
+  - variable: NEXT_PUBLIC_BASE_URL
+    value: https://ong-ide-evangelizar--ong-ide-evangelizar-web.us-central1.hosted.app
+    availability:
+      - BUILD
+      - RUNTIME
+
   - variable: SESSION_SECRET
     secret: sessionSecret
