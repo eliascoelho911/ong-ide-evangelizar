@@ -8,6 +8,12 @@ runConfig:
   memoryMiB: 512
 
 env:
+  - variable: STORAGE_BUCKET
+    value: ong-ide-evangelizar-web.firebasestorage.app
+    availability:
+      - BUILD
+      - RUNTIME
+
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
     secret: firebaseApiKey
 
@@ -24,4 +30,10 @@ env:
     secret: firebaseAppId
     
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    secret: firebaseStorageBucket
+    value: ong-ide-evangelizar-web.firebasestorage.app
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: SESSION_SECRET
+    secret: myApiSessionSecret
