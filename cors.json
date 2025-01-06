@@ -1,0 +1,11 @@
+[
+    {
+        "origin": [
+            "https://ong-ide-evangelizar--ong-ide-evangelizar-web.us-central1.hosted.app/"
+        ],
+        "method": [
+            "GET", "POST", "PUT", "DELETE", "PATCH"
+        ],
+        "maxAgeSeconds": 3600
+    }
+]

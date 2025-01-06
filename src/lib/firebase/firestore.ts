@@ -15,9 +15,18 @@ export async function updateStudentData(studentId: string, studentData: Student[
 
 export async function updateStudentDocument(studentId: string, document: { id: string, path: string | null }) {
     const docRef = doc(db, 'students', studentId);
-    await updateDoc(docRef, {
-        [`documents.${document.id}`]: document.path === null ? deleteField() : document.path
-    });
+
+    if ((await getDoc(docRef)).exists()) {
+        await updateDoc(docRef, {
+            [`documents.${document.id}`]: document.path === null ? deleteField() : document.path
+        });
+    } else {
+        await setDoc(docRef, {
+            documents: {
+                [document.id]: document.path
+            }
+        });
+    }
 }
 
 export async function fetchAllStudents() {

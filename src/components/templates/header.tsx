@@ -50,7 +50,7 @@ export function ContentWithHeader(
         children
     }: {
         user?: User,
-        headerChildren: React.ReactNode,
+        headerChildren?: React.ReactNode,
         children: React.ReactNode
     }
 ) {

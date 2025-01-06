@@ -1,4 +1,4 @@
-import { ref, uploadBytesResumable, getDownloadURL, getMetadata, deleteObject } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { storage } from "./config";
 
 export async function uploadStudentFile(

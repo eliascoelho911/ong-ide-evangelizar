@@ -116,10 +116,16 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
   const fields = schema.sessions.flatMap(session =>
     session.groups.flatMap(group => group.fields)
   );
+  const defaultValues = {
+    ...Object.fromEntries(
+      fields.map(field => [field.id, ''])
+    ),
+    ...values
+  }
 
   const zFormSchema = buildZodSchema(fields);
   const form = useForm<z.infer<typeof zFormSchema>>({
-    defaultValues: values,
+    defaultValues: defaultValues,
     resolver: zodResolver(zFormSchema)
   });
   const tabs = getTabs(schema);
@@ -178,8 +184,8 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
           )}
         </TabbedFormContent>
         <Button type="submit" className="btn" disabled={formIsLoading(form.formState)}>
-            {formIsLoading(form.formState) ? (<><Loader2 className="animate-spin" /> Salvando...</>) : "Salvar"}
-          </Button>
+          {formIsLoading(form.formState) ? (<><Loader2 className="animate-spin" /> Salvando...</>) : "Salvar"}
+        </Button>
       </form>
     </Form>
   );
@@ -204,6 +210,11 @@ function buildZodSchema(fields: Field[]) {
             return file.size < 1024 * 1024 * 4
           },
           { message: 'O arquivo deve ter no máximo 4MB' }
+        ).refine(
+          (file: File) => {
+            return file.type.startsWith("image/") || file.type === "application/pdf";
+          },
+          { message: 'Formato de arquivo não suportado' }
         ).nullish().catch(undefined);
       } else {
         let zodField = z.string({
