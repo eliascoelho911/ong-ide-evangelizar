@@ -1,4 +1,4 @@
-import { simpleStudentProfileFormSchema } from "@/data/student_profile_form_schema"
+import { studentProfileFormSchema } from "@/data/student_profile_form_schema"
 import { fetchStudentById } from "@/data/students"
 import UserAvatar from "@/components/user-avatar"
 import StudentForm from "./student-form-wrapper"
@@ -29,6 +29,7 @@ export default async function StudentFormPage({
     const fullName = student ? getFullName(student) : undefined;
     const birthday = student ? getBirthday(student) : undefined;
     const guardians = student ? getGuardians(student) : undefined;
+    const status = student ? student.data?.additional_information_status : undefined;
     const studentDocumentsWithUrl = student ? Object.fromEntries(
         await Promise.all(
             Object.entries(student?.documents ?? {}).map(async ([key, path]) => {
@@ -71,11 +72,12 @@ export default async function StudentFormPage({
                     <h2 className="mt-2 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">{fullName}</h2> 
                     {edit == false && birthday && <p className="text-sm text-muted-foreground">{birthday}</p>}
                     {edit == false && guardians && <p className="text-sm text-muted-foreground">de {guardians}</p>}
+                    {edit == false && status && <p className="text-sm text-muted-foreground">Status: {status}</p>}
                 </div> }
 
                 <StudentForm
                     edit={edit}
-                    schema={simpleStudentProfileFormSchema}
+                    schema={studentProfileFormSchema}
                     studentId={studentId}
                     studentData={student?.data}
                     studentDocuments={studentDocumentsWithUrl} />

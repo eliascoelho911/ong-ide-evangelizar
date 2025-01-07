@@ -190,16 +190,33 @@ export const studentProfileFormSchema: FormSchema = {
                             editable: false
                         },
                         {
-                            id: 'admission_date',
-                            name: 'Data de Ingresso',
-                            type: 'text',
-                            pattern: '^\\d{2}\\/\\d{2}\\/\\d{4}$',
-                            editable: false
-                        },
-                        {
                             id: 'notes',
                             name: 'Observações',
                             type: 'textarea',
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            name: 'Documentos',
+            id: 'documentos',
+            groups: [
+                {
+                    name: 'Documentos Pessoais',
+                    id: 'personal_documents',
+                    fields: [
+                        {
+                            id: 'personal_documents_rg_front',
+                            name: 'Frente do RG',
+                            type: 'file',
+                            is_required: false,
+                        },
+                        {
+                            id: 'personal_documents_rg_back',
+                            name: 'Verso do RG',
+                            type: 'file',
+                            is_required: false,
                         }
                     ]
                 }

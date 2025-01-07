@@ -2,7 +2,7 @@
 
 import { getStudentRoute } from "@/app/routes";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getFullName, Student } from "@/lib/types/student";
+import { getBirthday, getFullName, Student } from "@/lib/types/student";
 import { useRouter } from 'next/navigation';
 
 const StudentCard: React.FC<{
@@ -20,6 +20,7 @@ const StudentCard: React.FC<{
       </Avatar>
       <div>
         <h2 className="text-lg font-bold">{getFullName(student)}</h2>
+        <p className="text-sm">{getBirthday(student)}</p>
       </div>
     </div>
   );
