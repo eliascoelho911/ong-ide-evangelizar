@@ -228,7 +228,15 @@ function buildZodSchema(fields: Field[]) {
         }
         acc[field.id] = zodField.refine((value: string) => {
           return !field.is_required || value.trim().length > 0;
-        }, { message: `${field.name} é obrigatório` });
+        }, { message: `${field.name} é obrigatório` }).refine((value: string) => {
+          if (field.id.includes('cpf')) {
+            return isValidCPF(value);
+          } else if (field.id.includes('rg')) {
+            return isValidRG(value);
+          } else {
+            return true;
+          }
+        }, { message: `${field.name} não é válido` });
       }
       return acc;
     }, {} as Record<string, z.ZodTypeAny>)
@@ -241,3 +249,40 @@ function buildZodSchema(fields: Field[]) {
     }, {} as Record<string, true | undefined>)
   );
 }
+
+
+const isValidCPF = (cpf: string): boolean => {
+  const cleaned = cpf.replace(/\D/g, '');
+  
+  // CPF precisa ter 11 dígitos
+  if (cleaned.length !== 11) return false;
+  
+  // Evita CPFs com todos os dígitos iguais (ex: 00000000000, 11111111111, etc)
+  if (/^(\d)\1+$/.test(cleaned)) return false;
+  
+  // Validação do primeiro dígito verificador
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cleaned.charAt(i)) * (10 - i);
+  }
+  let remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(cleaned.charAt(9))) return false;
+  
+  // Validação do segundo dígito verificador
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cleaned.charAt(i)) * (11 - i);
+  }
+  remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(cleaned.charAt(10))) return false;
+  
+  return true;
+};
+
+// Função para validar RG
+const isValidRG = (rg: string): boolean => {
+  const cleaned = rg.replace(/\D/g, '');
+  return cleaned.length >= 5 && cleaned.length <= 14;
+};

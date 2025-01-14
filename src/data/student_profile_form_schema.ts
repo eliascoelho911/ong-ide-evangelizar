@@ -51,25 +51,11 @@ export const studentProfileFormSchema: FormSchema = {
                     id: 'place_of_birth',
                     fields: [
                         {
-                            id: 'place_of_birth_country',
-                            name: 'País',
-                            type: 'select',
-                            is_required: true,
-                            options: ['Brasil'] // Adicionar outros países
-                        },
-                        {
                             id: 'place_of_birth_state',
                             name: 'Estado',
                             type: 'select',
                             is_required: true,
-                            options: ['São Paulo', 'Rio de Janeiro'] // Adicionar outros estados
-                        },
-                        {
-                            id: 'place_of_birth_city',
-                            name: 'Cidade',
-                            type: 'select',
-                            options: ['São Paulo', 'Rio de Janeiro'], // Adicionar outras cidades
-                            is_required: true,
+                            options: ['AL', 'AC', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
                         }
                     ]
                 }
