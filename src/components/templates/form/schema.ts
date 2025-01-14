@@ -18,6 +18,7 @@ export interface Field {
     id: string;
     name: string;
     type: 'text' | 'textarea' | 'select' | 'file';
+    value?: string;
     is_required?: boolean;
     editable?: boolean;
     pattern?: string;

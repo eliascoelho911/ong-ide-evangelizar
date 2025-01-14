@@ -45,19 +45,6 @@ export const studentProfileFormSchema: FormSchema = {
                             options: ['Masculino', 'Feminino', 'Outro']
                         }
                     ]
-                },
-                {
-                    name: 'Naturalidade',
-                    id: 'place_of_birth',
-                    fields: [
-                        {
-                            id: 'place_of_birth_state',
-                            name: 'Estado',
-                            type: 'select',
-                            is_required: true,
-                            options: ['AL', 'AC', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
-                        }
-                    ]
                 }
             ]
         },
@@ -173,7 +160,8 @@ export const studentProfileFormSchema: FormSchema = {
                             name: 'Situação',
                             type: 'select',
                             options: ['Ativo', 'Inativo'],
-                            editable: false
+                            editable: false,
+                            is_required: true
                         },
                         {
                             id: 'notes',

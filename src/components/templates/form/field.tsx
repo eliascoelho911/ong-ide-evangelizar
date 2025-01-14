@@ -15,13 +15,42 @@ import { FormControl } from "@/components/ui/form";
 import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export default function FieldInput({ field, fileUrl, onFormChange, ...props }: { field: Field, fileUrl: string, onFormChange?: (value: string | File | null) => void }) {
+export default function FieldInput({
+  field, fileUrl, onFormChange, onAddressLoaded, ...props }: {
+    field: Field,
+    fileUrl: string,
+    onFormChange?: (value: string | File | null) => void,
+    onAddressLoaded?: (data: { [key: string]: string }) => void
+  }
+) {
   const [showInputFile, setShowInputFile] = React.useState(fileUrl == undefined);
 
   return (
     <div>
       {field.type === "text" &&
-        <FormControl><Input {...props} mask={field.pattern} /></FormControl>}
+        <FormControl><Input {...props} mask={field.pattern} onBlur={async (e) => {
+          if (field.id === "residential_address_zip_code") {
+            const cep = e.target.value.replace(/\D/g, "");
+            if (cep.length === 8) {
+              try {
+                const res = await fetch(`https://brasilapi.com.br/api/cep/v1/${cep}`);
+                if (res.ok) {
+                  const data = await res.json();
+                  onAddressLoaded?.({
+                    residential_address_street: data.street,
+                    residential_address_neighborhood: data.neighborhood,
+                    residential_address_city: data.city,
+                    residential_address_state: data.state,
+                  });
+                } else {
+                  console.error("Failed to fetch address data:", res.statusText);
+                }
+              } catch (err) {
+                console.error(err);
+              }
+            }
+          }
+        }} /></FormControl>}
       {field.type === "select" && (
         <Select onValueChange={onFormChange} {...props}>
           <FormControl>

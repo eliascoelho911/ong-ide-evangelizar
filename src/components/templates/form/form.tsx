@@ -175,6 +175,9 @@ export function TabbedEditableForm({ schema, values, onValidSubmit, onInvalidSub
                     field={field}
                     fileUrl={values[field.id]}
                     onFormChange={formField.onChange}
+                    onAddressLoaded={(data) => Object.entries(data).forEach(([key, value]) => {
+                      form.setValue(key, value)
+                    })}
                     {...formField}
                   />
                   <FormMessage />
@@ -253,13 +256,13 @@ function buildZodSchema(fields: Field[]) {
 
 const isValidCPF = (cpf: string): boolean => {
   const cleaned = cpf.replace(/\D/g, '');
-  
+
   // CPF precisa ter 11 dígitos
   if (cleaned.length !== 11) return false;
-  
+
   // Evita CPFs com todos os dígitos iguais (ex: 00000000000, 11111111111, etc)
   if (/^(\d)\1+$/.test(cleaned)) return false;
-  
+
   // Validação do primeiro dígito verificador
   let sum = 0;
   for (let i = 0; i < 9; i++) {
@@ -268,7 +271,7 @@ const isValidCPF = (cpf: string): boolean => {
   let remainder = (sum * 10) % 11;
   if (remainder === 10 || remainder === 11) remainder = 0;
   if (remainder !== parseInt(cleaned.charAt(9))) return false;
-  
+
   // Validação do segundo dígito verificador
   sum = 0;
   for (let i = 0; i < 10; i++) {
@@ -277,7 +280,7 @@ const isValidCPF = (cpf: string): boolean => {
   remainder = (sum * 10) % 11;
   if (remainder === 10 || remainder === 11) remainder = 0;
   if (remainder !== parseInt(cleaned.charAt(10))) return false;
-  
+
   return true;
 };
 
