@@ -16,16 +16,6 @@ Este projeto é um sistema para gerenciamento de alunos atendidos pela ONG Ide E
 - Tailwind CSS
 - TypeScript
 
-## Estrutura do Projeto
-
-- `src/`: Contém o código-fonte do projeto
-- `public/`: Contém arquivos públicos, como o `index.html`
-- `.next/`: Diretório gerado pelo Next.js durante a build
-- `.storybook/`: Configurações do Storybook
-- `components.json`: Configuração dos componentes
-- `firebase.json`: Configuração do Firebase
-- `tsconfig.json`: Configuração do TypeScript
-
 ## Publicação
 O sistema está publicado na URL: https://ong-ide-evangelizar--ong-ide-evangelizar-web.us-central1.hosted.app/
 
