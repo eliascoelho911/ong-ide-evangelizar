@@ -18,9 +18,3 @@ Este projeto é um sistema para gerenciamento de alunos atendidos pela ONG Ide E
 
 ## Publicação
 O sistema está publicado na URL: https://ong-ide-evangelizar--ong-ide-evangelizar-web.us-central1.hosted.app/
-
-## Autor
-Desenvolvido por Elias Costa Coelho.
-
-### Licença
-Este projeto está licenciado sob a MIT License.
